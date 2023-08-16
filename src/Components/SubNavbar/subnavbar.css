@@ -1,0 +1,18 @@
+.subnav{
+    height: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+.subnav-item{
+    width: 5rem;
+    height: 100%;
+    margin-inline: 1rem;
+    background-color: rgb(27, 179, 255);
+    border: black;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

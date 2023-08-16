@@ -1,0 +1,24 @@
+.landing{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 5rem;
+}
+.landing h1{
+    margin: 0;
+    font-size: 4rem;
+}
+.search-form{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+.search-bar{
+    height: 2.2rem;
+    width: 60%;
+    max-width: 35rem;
+    border: none;
+    background-color: rgb(232, 232, 232);
+    border-radius: 2rem;
+}
