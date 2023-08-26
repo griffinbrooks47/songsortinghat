@@ -1,4 +1,7 @@
 .navbar{
+    position: absolute;
+    left: 0;
+    top: 0;
     display: flex;
     justify-content: left;
     align-items: center;
@@ -9,5 +12,8 @@
     margin-inline: 1rem;
     text-align: center;
     font-size: 1.2rem;
+}
+a{
     text-decoration: none;
+    cursor: pointer;
 }

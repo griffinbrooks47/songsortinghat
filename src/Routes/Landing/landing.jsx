@@ -1,4 +1,5 @@
 import './landing.css'
+import { Navbar } from '../../Components/Navbar/navbar'
 import { SubNavbar } from '../../Components/SubNavbar/subnavbar'
 
 export const Landing = () => {
@@ -9,13 +10,15 @@ export const Landing = () => {
 
     return (
         <main className='landing'>
-            <h1>Song Sorting Hat</h1>
-            <SubNavbar />
-            <form className='search-form'>
-                <input type='text' className='search-bar'>
-                
-                </input>
-            </form>
+            <div className='landing-container'>
+                <h1>Song Sorting Hat</h1>
+                <SubNavbar />
+                <form className='search-form'>
+                    <input type='text' className='search-bar'>
+                    
+                    </input>
+                </form>
+            </div>
         </main>
     )
 }
