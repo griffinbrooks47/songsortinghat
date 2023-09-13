@@ -1,2 +1,108 @@
+.catalogue-settings{
+    display: flex;
+    justify-content: center;
+    font-family: mukta, sans-serif;
+    line-height: 1.5rem;
+}
+.settings-buttons{
+    display: flex;
+}
+
+
+
+.catalogue{
+    justify-content: center;
+    font-family: mukta, sans-serif;
+    line-height: 1.5rem;
+}
+.catalogue-header{
+    text-align: center;
+}
+
+.catalogue-albums{
+    display: grid;
+    gap: 1rem;
+    width: 80%;
+    margin-inline: auto;
+    place-items: center;
+    grid-template-columns: repeat(auto-fill, minmax(19.5rem, 1fr));
+}
+.album-card{
+    height: 9rem;
+    width: 20rem;
+    border-radius: 0.5rem;
+    background-color: rgb(255, 255, 255);
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;
+}
+.album-card-tag{
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    width: 100%;
+    height: 100%;
+}
+.album-card-title{
+    margin: 0;
+    font-size: 1.5rem;
+    padding-inline: 1rem;
+    margin-inline: auto;
+    text-align: center;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 3; /* Change this number to the desired number of lines */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.album-card-cover{
+    width: 7.7rem;
+    height: 7.7rem;
+    margin-left: 0.6rem;
+    border-radius: 0.3rem;
+}
+
+.catalogue-singles{
+    display: grid;
+    gap: 1rem;
+    width: 80%;
+    margin-inline: auto;
+    place-items: center;
+    grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+}
+.single-card{
+    height: 5rem;
+    width: 13rem;
+    border-radius: 0.5rem;
+    background-color: rgb(255, 255, 255);
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;
+}
+.single-card-tag{
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    width: 100%;
+    height: 100%;
+}
+.single-card-title{
+    margin: 0;
+    font-size: 1.2rem;
+    padding-inline: 1rem;
+    margin-inline: auto;
+    text-align: center;
+    
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* Change this number to the desired number of lines */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+}
+.single-card-cover{
+    width: 4rem;
+    height: 4rem;
+    margin-left: 0.5rem;
+    border-radius: 0.3rem;
+}
+
 
 

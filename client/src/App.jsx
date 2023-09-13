@@ -2,10 +2,9 @@ import { Landing } from './Routes/Landing/landing.jsx'
 import { Ranking } from './Routes/RankingPage/ranking.jsx'
 import { Catalogue } from './Routes/Catalogue/catalogue.jsx'
 import { createBrowserRouter, createRoutesFromElements, RouterProvider, Route, Link, Outlet } from 'react-router-dom'
-import { useState, useContext } from 'react'
-import axios from 'axios'
+
+
 import './App.css'
-  
 
 function App() {
 
@@ -18,14 +17,6 @@ function App() {
             </Route>
         )
     )
-
-    axios.get('http://musicbrainz.org/ws/2/artist/?query=chancetherapper&fmt=json')
-      .then(res => {
-        console.log(res.data);
-      })
-
-    const [songData, setSongData] = useState({});
-
 
     return (
         <div className='App'>
@@ -42,13 +33,10 @@ const Root = () => {
         <>
             <ul className='navbar'>
                 <li className='nav-item'>
-                    <Link to='/'>Home</Link>
+                    <Link to='/' className='nav-item-tag'>Home</Link>
                 </li>
                 <li className='nav-item'>
-                    <Link to='/ranking'>About</Link>
-                </li>
-                <li className='nav-item'>
-                    <Link to='/ranking'>Contact</Link>
+                    <Link to='/catalogue' className='nav-item-tag'>Catalogue</Link>
                 </li>
             </ul>
             <div>
