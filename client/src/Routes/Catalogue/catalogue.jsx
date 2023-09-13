@@ -1,29 +1,12 @@
 import { useState, useEffect } from 'react';
 import './catalogue.css'
+import { useArtistContext } from '../../Context/artist-context';
 
 export const Catalogue = () => {
 
-    const api_url = 'http://localhost:5000/search?artist=kanye'
+    const { artist, setArtist, artistData, setArtistData } = useArtistContext();
 
-    const [albumData, setAlbumData] = useState([])
-    const [singlesData, setSingleData] = useState([])
-
-    useEffect(() => {
-        const fetchData = async () => {
-            fetch(api_url)
-            .then((response) => response.json())
-            .then(data => {
-                setAlbumData(data.albums)
-                setSingleData(data.singles)
-            })
-            .catch(err => {
-                console.log(err)
-            })
-        }
-        fetchData();
-    }, []);
-
-    if (albumData == [] && singlesData == []){
+    if (artistData == {}){
         return (
             <div>
                 Nothing
@@ -43,7 +26,7 @@ export const Catalogue = () => {
                 <h2 className='catalogue-header'>Projects</h2>
                 <ul className='catalogue-albums'>
                 {
-                    albumData.map((album, index) => (
+                    artistData.albums.map((album, index) => (
                         <AlbumCard name={album.name} cover={album.cover} key={index} />
                     ))
                 }
@@ -51,7 +34,7 @@ export const Catalogue = () => {
                 <h2 className='catalogue-header'>Singles</h2>
                 <ul className='catalogue-singles'>
                 {
-                    singlesData.map((single, index) => (
+                    artistData.singles.map((single, index) => (
                         <SingleCard name={single.name} cover={single.cover} key={index} />
                     ))
                 }

@@ -2,7 +2,7 @@ import { Landing } from './Routes/Landing/landing.jsx'
 import { Ranking } from './Routes/RankingPage/ranking.jsx'
 import { Catalogue } from './Routes/Catalogue/catalogue.jsx'
 import { createBrowserRouter, createRoutesFromElements, RouterProvider, Route, Link, Outlet } from 'react-router-dom'
-
+import ArtistContextProvider from './Context/artist-context.jsx'
 
 import './App.css'
 
@@ -19,9 +19,12 @@ function App() {
     )
 
     return (
-        <div className='App'>
-            <RouterProvider router={router}/>
-        </div>
+        <ArtistContextProvider>
+            <div className='App'>
+                <RouterProvider router={router} history={history}/>
+            </div>
+        </ArtistContextProvider>
+        
     )
 }
 
@@ -34,9 +37,6 @@ const Root = () => {
             <ul className='navbar'>
                 <li className='nav-item'>
                     <Link to='/' className='nav-item-tag'>Home</Link>
-                </li>
-                <li className='nav-item'>
-                    <Link to='/catalogue' className='nav-item-tag'>Catalogue</Link>
                 </li>
             </ul>
             <div>

@@ -1,5 +1,5 @@
 .landing{
-    height: 70vh;
+    height: 65vh;
 }
 .landing-container{
     height: 100%;
@@ -8,11 +8,11 @@
     justify-content: center;
     align-items: center;
 }
-.landing h1{
-    margin-inline: auto;
-    margin-block: 0;
-    font-size: 4.5rem;
+.landing-title{
     font-family: 'Nanum Pen Script', cursive;
+    margin-inline: auto;
+    margin-bottom: 0.5rem;
+    font-size: 4.5rem;
 }
 .search-form{
     position: relative;
@@ -42,4 +42,39 @@ search-bar::placeholder {
     position: absolute;
     width: 1.5rem;
     left: 0.8rem;
+}
+
+.artist-profile{
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: left;
+    align-items: center;
+    border-radius: 0.5rem;
+    background-color: rgb(255, 255, 255);
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;
+    height: 15rem;
+    width: 35rem;
+    margin-bottom: 1.5rem;
+    margin-top: 1rem;
+}
+.artist-profile-picture{
+    height: 13rem;
+    margin-left: 1rem;
+    border-radius: 0.5rem;
+    object-fit: cover;
+}
+.artist-profile-info{
+    margin-inline: auto;
+    text-align: center;
+}
+.artist-profile-title{
+    font-family: mukta, sans-serif;
+    margin-block: 0.5rem;
+    font-size: 2.5rem;
+    line-height: 2.5rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* Change this number to the desired number of lines */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
