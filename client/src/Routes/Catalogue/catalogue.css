@@ -1,14 +1,50 @@
 .catalogue-settings{
     display: flex;
+    flex-direction: column;
     justify-content: center;
+    align-items: center;
     font-family: mukta, sans-serif;
     line-height: 1.5rem;
+}
+.settings-header{
+    margin-bottom: 0;
+}
+.settings-desc{
+    margin-top: 0.5rem;
+    margin-bottom: 0.8rem;
+    text-align: center;
+    width: 80%;
 }
 .settings-buttons{
     display: flex;
 }
-
-
+.begin-ranking-button{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    cursor: pointer;
+    height: 100%;
+    padding-left: 1rem;
+    padding-right: 0.8rem;
+    font-size: 1.1rem;
+    margin-inline: 0.5rem;
+    border-radius: 0.2rem;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+}
+.begin-ranking-button:hover{
+    background-color: green;
+    transition: background-color 100ms;
+    color: white;
+}
+.begin-ranking-button:hover .begin-ranking-button-img{
+    filter: brightness(0) invert(1);
+}
+.begin-ranking-button-img{
+    border-radius: 50%;
+    height: 1.5rem;
+    margin-left: 0.3rem;
+}
 
 .catalogue{
     justify-content: center;
