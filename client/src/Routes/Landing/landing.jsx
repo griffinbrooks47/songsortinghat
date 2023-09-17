@@ -18,6 +18,18 @@ export const Landing = () => {
         fetch(url)
         .then((response) => response.json())
         .then(data => {
+
+            data.albums.forEach((album, index) => {
+                album['isIncluded'] = true;
+                album['id'] = index;
+                album['category'] = 'album'
+            })
+            data.singles.forEach((single, index) => {
+                single['isIncluded'] = true;
+                single['id'] = index;
+                single['category'] = 'single'
+            })
+        
             setArtistData(data)
             setArtist(data.artist[0].name)
             setPicture(data.artist[0].images[0].url)
@@ -47,7 +59,7 @@ export const Landing = () => {
     return (
         <main className='landing'>
             <div className='landing-container'>
-                <h1 className='landing-title'>Song Sorting Hat</h1>
+                <h1 className='landing-title'>Search</h1>
                 {artistLoaded && 
                 <ArtistProfile name={artist} picture={picture}/>
                 }

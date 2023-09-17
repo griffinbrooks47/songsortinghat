@@ -2,16 +2,34 @@ import { useContext, createContext, useState } from 'react'
 
 const ArtistContext = createContext(null)
 
+// each button shoud be a component with an individual activated state.
+// each component is tied to a song/album in the glabal artistData context
+
 export default function ArtistContextProvider(props){
     const [artist, setArtist] = useState('');
     const [artistLoaded, setArtistLoaded] = useState(false);
     const [picture, setPicture] = useState('');
     const [id, setId] = useState('');
+    const [enableAlbums, setEnableAlbums] = useState(true);
+    const [enableSingles, setEnableSingles] = useState(true);
     // list of song objects, each with an eliminated state
     const [artistData, setArtistData] = useState({
         albums:[],
+        albumSingles:[],
         singles:[],
     });
+
+    const setIncluded = (category, id, bool) => {
+        let copyData = artistData;
+        if(category == 'album'){
+            copyData.albums[id].isIncluded = bool
+            setArtistData(copyData)
+        }
+        if(category == 'single'){
+            copyData.singles[id].isIncluded = bool
+            setArtistData(copyData)
+        }
+    }
 
     return (
         <ArtistContext.Provider
@@ -20,7 +38,9 @@ export default function ArtistContextProvider(props){
                 artistLoaded, setArtistLoaded,
                 picture, setPicture, 
                 id, setId, 
-                artistData, setArtistData}
+                artistData, setArtistData, setIncluded,
+                enableAlbums, setEnableAlbums, enableSingles, setEnableSingles
+                }
             }
         >
             {props.children}

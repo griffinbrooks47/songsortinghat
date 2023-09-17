@@ -27,13 +27,37 @@
     place-items: center;
     grid-template-columns: repeat(auto-fill, minmax(19.5rem, 1fr));
 }
+
 .album-card{
     height: 9rem;
     width: 20rem;
     border-radius: 0.5rem;
     background-color: rgb(255, 255, 255);
     box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;
+    cursor: pointer;
 }
+.album-card-enter, .single-card-enter {
+    opacity: 1;
+}
+.album-card-enter-active, .single-card-enter-active {
+opacity: 0.3;
+transition: opacity 300ms;
+}
+.album-card-enter-done, .single-card-enter-done{
+    opacity: 0.3;
+}
+.album-card-exit, .single-card-exit {
+opacity: 0.3;
+}
+.album-card-exit-active, .single-card-exit-active {
+opacity: 1;
+transition: opacity 300ms;
+}
+.album-card-exit-done{
+    opacity: 1;
+}
+
+
 .album-card-tag{
     display: flex;
     align-items: center;
@@ -75,6 +99,7 @@
     border-radius: 0.5rem;
     background-color: rgb(255, 255, 255);
     box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;
+    cursor: pointer;
 }
 .single-card-tag{
     display: flex;
