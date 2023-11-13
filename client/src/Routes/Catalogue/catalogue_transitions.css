@@ -1,0 +1,67 @@
+.album-card-active{
+    height: 9rem;
+    width: 20rem;
+    border-radius: 0.5rem;
+    background-color: rgb(255, 255, 255);
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;
+    cursor: pointer;
+}
+.single-card-active{
+    height: 5rem;
+    width: 13rem;
+    border-radius: 0.5rem;
+    background-color: rgb(255, 255, 255);
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;
+    cursor: pointer;
+}
+.album-card-active-enter, .single-card-active-enter {
+    opacity: 1;
+}
+.album-card-active-enter-active, .single-card-active-enter-active {
+opacity: 0.3;
+transition: opacity 300ms;
+}
+.album-card-active-enter-done, .single-card-active-enter-done{
+    opacity: 0.3;
+}
+.album-card-active-exit, .single-card-active-exit {
+opacity: 0.3;
+}
+.album-card-active-exit-active, .single-card-active-exit-active {
+opacity: 1;
+transition: opacity 300ms;
+}
+.album-card-active-exit-done, single-card-active-exit-done{
+    opacity: 1;
+}
+
+
+.album-card-deactive{
+    height: 9rem;
+    width: 20rem;
+    border-radius: 0.5rem;
+    background-color: rgb(255, 255, 255);
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;
+    cursor: pointer;
+    opacity: 0.3;
+}
+.album-card-deactive-enter, .single-card-deactive-enter {
+    opacity: 0.3;
+}
+.album-card-deactive-enter-active, .single-card-deactive-enter-active {
+opacity: 1;
+transition: opacity 300ms;
+}
+.album-card-deactive-enter-done, .single-card-deactive-enter-done{
+    opacity: 1;
+}
+.album-card-deactive-exit, .single-card-deactive-exit {
+opacity: 1;
+}
+.album-card-deactive-exit-active, .single-card-deactive-exit-active {
+opacity: 0.3;
+transition: opacity 300ms;
+}
+.album-card-deactive-exit-done{
+    opacity: 0.3;
+}

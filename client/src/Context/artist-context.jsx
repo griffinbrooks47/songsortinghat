@@ -15,11 +15,13 @@ export default function ArtistContextProvider(props){
     // list of song objects, each with an eliminated state
     const [artistData, setArtistData] = useState({
         albums:[],
-        albumSingles:[],
-        singles:[],
+        singles:[]
     });
 
-    const setIncluded = (category, id, bool) => {
+    // key : song title
+    const [finalSongs, setFinalSongs] = useState(new Map());
+
+    const setGlobalIncluded = (category, id, bool) => {
         let copyData = artistData;
         if(category == 'album'){
             copyData.albums[id].isIncluded = bool
@@ -31,6 +33,44 @@ export default function ArtistContextProvider(props){
         }
     }
 
+    const createFinalSongs = () => {
+        let songs = {}; // Make a copy of the current state
+      
+        for (const album of artistData.albums) {
+            if (!album.isIncluded) {
+            continue;
+            }
+        
+            for (const track of album.tracks) {
+                if (!(track in songs)) {
+                    songs[track] = {
+                    album: album.name,
+                    cover: album.cover,
+                    isIncluded: true,
+                    };
+                }
+            }
+        }
+        
+        for (const single of artistData.singles) {
+            if (!(single.name in songs)) {
+                songs[single.name] = {
+                cover: single.cover,
+                isIncluded: true,
+            };
+            }
+        }
+        setFinalSongs(songs);
+    }
+      
+
+    const addFinalSong = (finalSong) => {
+        let finalSongsCopy = {...finalSongs}
+        finalSongsCopy[finalSong] = {}
+        setFinalSongs(finalSongsCopy);
+    }
+     
+
     return (
         <ArtistContext.Provider
             value={
@@ -38,8 +78,9 @@ export default function ArtistContextProvider(props){
                 artistLoaded, setArtistLoaded,
                 picture, setPicture, 
                 id, setId, 
-                artistData, setArtistData, setIncluded,
-                enableAlbums, setEnableAlbums, enableSingles, setEnableSingles
+                artistData, setArtistData, setGlobalIncluded,
+                enableAlbums, setEnableAlbums, enableSingles, setEnableSingles,
+                finalSongs, setFinalSongs, createFinalSongs, addFinalSong
                 }
             }
         >

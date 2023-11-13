@@ -1,6 +1,7 @@
 import { Landing } from './Routes/Landing/landing.jsx'
 import { Ranking } from './Routes/RankingPage/ranking.jsx'
 import { Catalogue } from './Routes/Catalogue/catalogue.jsx'
+import { Customize } from './Routes/Customize/customize.jsx'
 import { createBrowserRouter, createRoutesFromElements, RouterProvider, Route, Link, Outlet } from 'react-router-dom'
 import ArtistContextProvider from './Context/artist-context.jsx'
 
@@ -14,6 +15,7 @@ function App() {
                 <Route index element={<Landing />}/>
                 <Route path='ranking' element={<Ranking  />}/>
                 <Route path='catalogue' element={<Catalogue />}/>
+                <Route path='customize' element={<Customize />}/>
             </Route>
         )
     )

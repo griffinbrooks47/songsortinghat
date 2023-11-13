@@ -1,0 +1,40 @@
+.customize-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: mukta, sans-serif;
+    flex-direction: column;
+    line-height: 1.5rem;
+}
+.artist-container{
+    display: flex;
+    background-color: white;
+    width: 25rem;
+    border-radius: 0.5rem;
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;
+}
+.artist-data{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin-inline: auto;
+}
+.artist-bit{
+    margin-bottom: 0.5rem;
+}
+.artist-bit-title{
+    margin-block: 0;
+    text-align: center;
+}
+.artist-bit-desc{
+    margin-block: 0;
+    text-align: center;
+}
+.artist-picture{
+    height: 10rem;
+    margin-block: 1rem;
+    margin-left: 1rem;
+    border-radius: 0.5rem;
+    object-fit: cover;
+}

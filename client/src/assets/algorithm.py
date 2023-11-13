@@ -47,9 +47,7 @@ class Algorithm:
             non_lowest = excluded.copy()
             non_lowest.remove(lowest)
             print('test case')
-
-
-            
+ 
             for song, data in self.songs.items():
                 print(song, data['above'], data['below'], len(data['missing']))
 
