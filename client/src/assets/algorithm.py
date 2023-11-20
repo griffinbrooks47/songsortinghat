@@ -190,7 +190,7 @@ class Algorithm:
             
 
 
-songs_list = ['No Problem', 'Good Ass Intro', 'Finish Line', 'Same Drugs', 'All We Got', 'NaNa', 'Blessings', 'Eternal', 'Sunday Candy', '14400 minutes', 'U got me fucked up', 'How Great', 'Juice', 'Cocoa Butter Kisses', 'Smoke Break', 'Prom Night']
+songs_list = ['Am I wrong', 'Mirrors', 'Down', 'Chloe', 'Miss Independent', 'Sunday Candy', 'No Problem', 'Nothing', 'Breakeven', 'Demons']
 random.shuffle(songs_list)
 
 algorithm = Algorithm(songs_list)

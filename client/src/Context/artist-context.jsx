@@ -12,6 +12,7 @@ export default function ArtistContextProvider(props){
     const [id, setId] = useState('');
     const [enableAlbums, setEnableAlbums] = useState(true);
     const [enableSingles, setEnableSingles] = useState(true);
+    
     // list of song objects, each with an eliminated state
     const [artistData, setArtistData] = useState({
         albums:[],
@@ -20,6 +21,10 @@ export default function ArtistContextProvider(props){
 
     // key : song title
     const [finalSongs, setFinalSongs] = useState(new Map());
+
+    const [globalCustomSongs, setGlobalCustomSongs] = useState(new Map());
+
+    const [songCount, setSongCount] = useState(0);
 
     const setGlobalIncluded = (category, id, bool) => {
         let copyData = artistData;
@@ -33,9 +38,11 @@ export default function ArtistContextProvider(props){
         }
     }
 
+    // keeps finalSongs updated between page reloads
+    // used on customize page
     const createFinalSongs = () => {
+        let songCount = 0;
         let songs = {}; // Make a copy of the current state
-      
         for (const album of artistData.albums) {
             if (!album.isIncluded) {
             continue;
@@ -43,33 +50,101 @@ export default function ArtistContextProvider(props){
         
             for (const track of album.tracks) {
                 if (!(track in songs)) {
-                    songs[track] = {
+                    songs[songCount] = {
+                    name:track,    
                     album: album.name,
                     cover: album.cover,
                     isIncluded: true,
                     };
+                    songCount++;
                 }
             }
         }
         
         for (const single of artistData.singles) {
+            if (!single.isIncluded) {
+                continue;
+                }
             if (!(single.name in songs)) {
-                songs[single.name] = {
+                songs[songCount] = {
+                name:single.name,    
                 cover: single.cover,
                 isIncluded: true,
-            };
+                };
+                songCount++;
             }
         }
+
+        // keeps songCount in sync when user switches pages
+        for(const key in globalCustomSongs){
+            if(globalCustomSongs[key].isIncluded) {
+                songCount++;
+            }
+        }
+
+        setSongCount(songCount);
         setFinalSongs(songs);
     }
-      
 
-    const addFinalSong = (finalSong) => {
-        let finalSongsCopy = {...finalSongs}
-        finalSongsCopy[finalSong] = {}
-        setFinalSongs(finalSongsCopy);
+    // used on ranking page
+    const updateFinalSongs = () => {
+        let currFinalSongs = {...finalSongs};
+        for(const key in globalCustomSongs){
+            currFinalSongs[key] = globalCustomSongs[key]
+        }
+        setFinalSongs(currFinalSongs);
     }
-     
+
+    const addGlobalCustomSong = (songTitle) => {
+
+        let data = {
+            name: songTitle,
+            cover: null,
+            isIncluded: true
+        }
+        let id = songCount + 1
+
+        let gcsCopy = {...globalCustomSongs}
+        gcsCopy[id] = data;
+
+        setGlobalCustomSongs(gcsCopy);
+        setSongCount(songCount + 1);
+    
+        return {
+            songId: id,
+            songData: data
+        };
+    }
+
+    const toggleGlobalCustomSong = (id) => {
+        let data = {...globalCustomSongs}
+        data[id].isIncluded = !data[id].isIncluded;
+        setGlobalCustomSongs(data);
+    }
+
+    const clearArtistData = () => {
+        setArtistData({});
+        setFinalSongs({});
+        setGlobalCustomSongs({});
+        setArtist('');
+        setArtistLoaded(false);
+        setPicture('');
+        setId('');
+        setEnableAlbums(true);
+        setEnableSingles(true);
+        setSongCount(0);
+    }
+
+    // not used atm
+    const checkDupe = (songTitle) => {
+
+        for(const [key, value] of Object.entries(finalSongs)){
+            if(songTitle.toLowerCase() === value.name.toLowerCase()){
+                return false;
+            }
+        }
+        return true;
+    }
 
     return (
         <ArtistContext.Provider
@@ -80,7 +155,10 @@ export default function ArtistContextProvider(props){
                 id, setId, 
                 artistData, setArtistData, setGlobalIncluded,
                 enableAlbums, setEnableAlbums, enableSingles, setEnableSingles,
-                finalSongs, setFinalSongs, createFinalSongs, addFinalSong
+                finalSongs, setFinalSongs, createFinalSongs, updateFinalSongs,
+                globalCustomSongs, setGlobalCustomSongs, addGlobalCustomSong, toggleGlobalCustomSong,
+                clearArtistData,
+                songCount
                 }
             }
         >

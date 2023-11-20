@@ -6,16 +6,21 @@ import { yupResolver} from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { useNavigate, Link } from "react-router-dom"
 import { Catalogue } from '../Catalogue/catalogue'
+import { useEffect } from 'react'
 
 export const Landing = () => {
 
     // artist data
-    const { artist, setArtist, artistLoaded, setArtistLoaded, picture, setPicture, id, setId, artistData, setArtistData, catalogue, addToCatalogue } = useArtistContext();
+    const { artist, setArtist, artistLoaded, setArtistLoaded, picture, setPicture, id, setId, artistData, setArtistData, catalogue, addToCatalogue, clearArtistData } = useArtistContext();
 
     // API request
     const api_url = 'http://localhost:5000/search?artist='
 
     const deluxe_keywords = ["deluxe", "expanded", "bonus", "anniversary", "remastered", "extended", "complete", "collectors edition"];
+
+    useEffect(() => {
+        clearArtistData();
+    }, [])
 
     // not fully implemented yet
     const checkDupe = (title, albums) => {

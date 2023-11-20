@@ -1,0 +1,90 @@
+.ranking{
+    display: flex;
+    font-family: mukta, sans-serif;
+}
+
+
+.stage-one{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+.stage-one-header{
+    text-align: center;
+    margin-top: 1rem;
+    margin-bottom: 0;
+}
+.stage-one-desc{
+    text-align: center;
+    margin-bottom: 0rem;
+}
+.stage-one-divider{
+    border: 0.1px solid #00000031;
+    margin: 20px 0;
+    width: 70%;
+    margin-inline: auto;
+}
+.stage-one-buttons{
+    display: flex;
+    justify-content: center;
+    height: 2rem;
+    margin-bottom: 1rem;
+}
+.stage-one-button{
+    height: 100%;
+    width: fit-content;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    margin-inline: 0.5rem;
+}
+.stage-one-button-tag{
+    padding-block: 0.25rem;
+    padding-inline: 1rem;
+    background-color: rgb(255, 255, 255);
+    border-radius: 0.2rem;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+}
+.stage-one-song-grid{
+    width: 70%;
+    margin-inline: auto;
+    display: grid;
+    place-items: center;
+    grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+    gap: 1rem;
+}
+.stage-one-song{
+    align-items: center;
+    width: fit-content;
+    height: fit-content;
+    background-color: rgb(255, 255, 255);
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;
+    border-radius: 0.4rem;
+}
+.stage-one-song-tag{
+    height: 7rem;
+    width: 15rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+.stage-one-song-title{
+    margin: 0;
+    font-size: 1rem;
+    padding-inline: 1rem;
+    text-align: center;
+    margin-inline: auto;
+    display: -webkit-box;
+    -webkit-line-clamp: 3; /* Change this number to the desired number of lines */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.stage-one-song-cover{
+    width: 5rem;
+    border-radius: 0.2rem;
+    margin-left: 1rem;
+}

@@ -38,3 +38,105 @@
     border-radius: 0.5rem;
     object-fit: cover;
 }
+
+.custom-music-form{
+    
+}
+
+.custom-song-header{
+    font-size: 1.3rem;
+    font-weight: bold;
+    margin-top: 1.5rem;
+    margin-bottom: 0.2rem;
+}
+.custom-song-desc{
+    margin-top: 0;
+    margin-bottom: 1rem;
+}
+
+.custom-song-buttons{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 3rem;
+}
+.custom-song-button-container{
+    background-color: aqua;
+    width: fit-content;
+    margin-bottom: 1rem;
+    border-radius: 0.2rem;
+    margin-inline: 0.5rem;
+}
+.custom-song-button{
+    padding-inline: 1rem;
+    padding-block: 0.5rem;
+    height: 100%;
+    background-color: white;
+    cursor: pointer;
+    
+}
+
+.custom-songs-container{
+    display: grid;
+    background-color: white;
+    height: 10rem;
+    width: 60%;
+}
+
+.custom-song-modal-overlay{
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    background-color: rgba(196, 196, 196, 0.328);
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.custom-song-modal{
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    flex-direction: column;
+    width: 28rem;
+    height: 17rem;
+    border-radius: 0.5rem;
+}
+.custom-song-modal-header{
+    margin-block: 0.5rem;
+}
+.custom-song-modal-field{
+    margin-bottom: 0.5rem;
+}
+.custom-song-modal-buttons{
+    margin-top: 0.5rem;
+}
+.custom-song-modal-button{
+    width: 3rem;
+    background-color: bisque;
+    padding-inline: 0.5rem;
+    margin-inline: 0.2rem;
+    cursor: pointer;
+}
+
+.custom-song{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 7rem;
+    height: 4rem;
+    background-color: rgb(163, 163, 190);
+}
+.custom-song-tag{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+
