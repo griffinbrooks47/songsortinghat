@@ -8,9 +8,13 @@ export const Ranking = () => {
 
     const { updateFinalSongs, finalSongs, songCount } = useArtistContext();
 
+    const [stageTwoSongs, setStageTwoSongs] = useState([]);
+
     const [stage, setStage] = useState(songCount > 10 ? true : false);
 
-    const setStageTwo = () => {
+    const setStageTwo = (songCandidates) => {
+        console.log(finalSongs)
+        setStageTwoSongs(songCandidates);
         setStage(false);
     }
 
@@ -26,7 +30,9 @@ export const Ranking = () => {
                     setStageTwo={setStageTwo}
                 />
                 ) : (
-                <StageTwo />
+                <StageTwo 
+                    candidates={stageTwoSongs}
+                />
             )}
         </main>
     )
@@ -34,7 +40,7 @@ export const Ranking = () => {
 
 export const StageOne = (props) => {
 
-    const { finalSongs } = useArtistContext();
+    const { finalSongs, songCount } = useArtistContext();
 
     // index represents global song ID
     const [songs, setSongs] = useState(new Map());
@@ -44,7 +50,8 @@ export const StageOne = (props) => {
     const nextIteration = () => {
         // switches to next stage
         if(currIteration >= Object.keys(songs).length-1){
-            props.setStageTwo();
+            const candidates = createCandidates();
+            props.setStageTwo(candidates);
         } else {
             setCurrIteration(currIteration + 1);
         }
@@ -58,10 +65,22 @@ export const StageOne = (props) => {
 
     const toggleIncluded = (stage, innerId) => {
         let currSongs = {...songs}
-        console.log(currSongs[stage][innerId][2]);
         currSongs[stage][innerId][2] = !currSongs[stage][innerId][2];
         setSongs(currSongs)
-        console.log(currSongs);
+    }
+
+    const createCandidates = () => {
+
+        let candidates = [];
+
+        for(const pageIdx in songs){
+            for(const innerIdx in songs[pageIdx]){
+                if(songs[pageIdx][innerIdx][2]){
+                    candidates.push(songs[pageIdx][innerIdx][1])
+                }
+            }
+        }
+        return candidates;
     }
 
     useEffect(() => {
@@ -95,7 +114,6 @@ export const StageOne = (props) => {
             currSongs[iteration] = currSongsIteration;
             iteration++;
         }
-        console.log(currSongs)
         setSongs(currSongs);
         setCurrIteration(0);
     }, [])
@@ -104,15 +122,20 @@ export const StageOne = (props) => {
         <div className="stage-one">
             <h2 className="stage-one-header">Choose Your Favorites</h2>
             <div className="stage-one-desc">
-                Songs selected will continue to the final ranking stage!
+                The songs you select will continue to the final ranking stage!
             </div>
             <hr className="stage-one-divider"></hr>
             <ul className="stage-one-buttons">
-                <li className="stage-one-button">
-                    <a className="stage-one-button-tag" onClick={prevIteration}>
-                        Back
-                    </a>
-                </li>
+                {
+                    (currIteration != 0 &&
+                        <li className="stage-one-button">
+                            <a className="stage-one-button-tag" onClick={prevIteration}>
+                                Back
+                            </a>
+                        </li>
+                        )
+                }
+                
                 <li className="stage-one-button">
                     <a className="stage-one-button-tag" onClick={nextIteration}>
                         Next
@@ -149,9 +172,25 @@ export const StageOneSong = (props) => {
     const [active, setActive] = useState(props.isIncluded);
 
     const variants = {
-        off: { opacity: 0.3, scale: 1},
-        on: { opacity: 1, scale: 1 },
+        off: { 
+            opacity: 0.3,
+            scale: 1,
+            boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.2)",
+        },
+        on: { 
+            opacity: 1, 
+            scale: 1,
+            boxShadow: "rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px",
+        },
       };
+
+    const styles = {
+        alignItems: 'center',
+        width: 'fit-content',
+        height: 'fit-content',
+        backgroundColor: 'rgb(255, 255, 255)',
+        borderRadius: '0.4rem',
+    };
 
     const toggleActive = () => {
         console.log(active);
@@ -164,25 +203,145 @@ export const StageOneSong = (props) => {
             initial="off"
             animate={active ? "on" : "off"}
             variants={variants}
+            style={styles}
         >
-            <li className="stage-one-song">
-                <a className="stage-one-song-tag" onClick={toggleActive}>
-                    <img src={props.cover} className="stage-one-song-cover"></img>
-                    <div className="stage-one-song-title">
-                        {props.name}
-                    </div>
-                </a>
-            </li>
+            <a className="stage-one-song-tag" onClick={toggleActive}>
+                <img src={props.cover} className="stage-one-song-cover" loading='lazy'></img>
+                <div className="stage-one-song-title">
+                    {props.name}
+                </div>
+            </a>
         </motion.div>
     )
 }
 
 
 
-export const StageTwo = () => {
+export const StageTwo = (props) => {
+
+    const { finalSongs, songCount } = useArtistContext();
+
+    const initStageTwoSongs = () => {
+        if(props.candidates.length > 0) {
+            return props.candidates
+        }
+        let candidates = [];
+        for(const key in finalSongs) {
+            candidates.push(finalSongs[key]);
+        }
+        return candidates;
+    }
+    const initSongData = () => {
+        let candidates = initStageTwoSongs();
+        setStageTwoSongs(candidates);
+        let currSongData = {};
+        for(const candidate of candidates){
+            let missingCandidates = [...candidates];
+            let missingIdx = missingCandidates.indexOf(candidate)
+            if (missingIdx !== -1) {
+                missingCandidates.splice(missingIdx, 1);
+              }
+            currSongData[candidate.name] = {
+                above:[],
+                below:[],
+                score:0,
+                missing:missingCandidates,
+                pass:false,
+                rank:null
+            }
+        }
+        return currSongData;
+    }
+
+    // generates final candidates directly from global finalSongs
+    const [stageTwoSongs, setStageTwoSongs] = useState([]);
+
+    // react variables
+    const [choiceOne, setChoiceOne] = useState({});
+    const [choiceTwo, setChoiceTwo] = useState({});
+
+    // algorithm variables
+    const [songData, setSongData] = useState(() => initSongData());
+    const [ranking, setRanking] = useState(true);
+    const [skips, setSkips] = useState([]);
+    const [prevLowest, setPrevLowest] = useState("");
+    const [prevHighest, setPrevHighest] = useState("");
+
+    const findLowestScore = (exclude) => {
+        let songDataCopy = {...songData};
+        if(exclude.length > 0) {
+            for(const excludeSong of exclude) {
+                delete songDataCopy[excludeSong];
+            }
+        }
+
+        let minKey = null;
+        let minValue = songCount+1;
+
+        for (const songDataKey in songDataCopy) {
+            let currentValue = songDataCopy[songDataKey].score;
+            if (currentValue < minValue) {
+              minValue = currentValue;
+              minKey = songDataKey;
+            }
+        }
+
+        return minKey;
+    }
+    const findHighestPotential = (excluded, lowest) => {
+
+        let songDataCopy = {...songData};
+
+        let missingSongs = songData[lowest]['missing'];
+
+        for(const exclusion in excluded) {
+            if(exclusion in missingSongs){
+                let removeIdx = missingSongs.indexOf(exclusion);
+                if(removeIdx !== -1){
+                    missingSongs.splice(removeIdx, 1);
+                }
+            }
+        }
+
+        let minKey = null;
+        let minValue = songCount+1;
+
+        for (const missingDataKey in missingSongs) {
+            let currentValue = songDataCopy[missingDataKey].score;
+            if (currentValue < minValue) {
+              minValue = currentValue;
+              minKey = missingDataKey;
+            }
+        }
+
+        return missingSongs[minKey]
+
+
+    }
+    const inherit = (winner, loser) => {
+
+    }
+    const secondaryInherit = (winner, loser) => {
+
+    }
+    const updateScores = () => {
+
+    }
+    const iteration = () => {
+
+    }
+    const completeRankings = () => {
+
+    }
+
     return (
         <div className="stage-two">
-            Stage2
+            <button onClick={() => {
+                
+                
+            }}>
+                Check Data
+            </button>
         </div>
     )
 }

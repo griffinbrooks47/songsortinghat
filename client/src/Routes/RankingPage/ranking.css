@@ -12,6 +12,7 @@
 }
 .stage-one-header{
     text-align: center;
+    font-weight: bold;
     margin-top: 1rem;
     margin-bottom: 0;
 }
@@ -29,7 +30,7 @@
     display: flex;
     justify-content: center;
     height: 2rem;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
 }
 .stage-one-button{
     height: 100%;
@@ -42,7 +43,7 @@
 }
 .stage-one-button-tag{
     padding-block: 0.25rem;
-    padding-inline: 1rem;
+    padding-inline: 1.5rem;
     background-color: rgb(255, 255, 255);
     border-radius: 0.2rem;
     box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
@@ -60,12 +61,11 @@
     width: fit-content;
     height: fit-content;
     background-color: rgb(255, 255, 255);
-    box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;
     border-radius: 0.4rem;
 }
 .stage-one-song-tag{
     height: 7rem;
-    width: 15rem;
+    width: 14rem;
     display: flex;
     justify-content: center;
     align-items: center;

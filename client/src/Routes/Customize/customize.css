@@ -51,7 +51,7 @@
 }
 .custom-song-desc{
     margin-top: 0;
-    margin-bottom: 1rem;
+    margin-bottom: 1.25rem;
 }
 
 .custom-song-buttons{
@@ -73,12 +73,23 @@
     height: 100%;
     background-color: white;
     cursor: pointer;
-    
+    border-radius: 0.2rem;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
 }
 
+.custom-songs-divider{
+    border: 0.1px solid #00000031;
+    margin: 20px 0;
+    width: 40%;
+    margin-inline: auto;
+    margin-top: 1.25rem;
+    margin-bottom: 1.75rem;
+}
 .custom-songs-container{
     display: grid;
-    background-color: white;
+    justify-content: center;
+    grid-auto-flow: column;
+    gap: 1rem;
     height: 10rem;
     width: 60%;
 }
@@ -128,7 +139,9 @@
     align-items: center;
     width: 7rem;
     height: 4rem;
-    background-color: rgb(163, 163, 190);
+    background-color: rgb(255, 255, 255);
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    border-radius: 0.2rem;
 }
 .custom-song-tag{
     height: 100%;

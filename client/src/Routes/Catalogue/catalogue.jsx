@@ -116,7 +116,7 @@ const FramerAlbumCard = (props) => {
             <li className='framer-album-card'>
                 
                 <a className='album-card-tag' onClick={toggleActive}>
-                    <img src={props.cover} className='album-card-cover'></img>
+                    <img src={props.cover} className='album-card-cover' loading='lazy'></img>
                     <h3 className='album-card-title'>{props.name}</h3>
                 </a>
                 
@@ -157,7 +157,7 @@ const FramerSingleCard = (props) => {
             <li className='framer-single-card'>
                 
                 <a className='single-card-tag' onClick={toggleActive}>
-                    <img src={props.cover} className='single-card-cover'></img>
+                    <img src={props.cover} className='single-card-cover' loading='lazy'></img>
                     <h3 className='single-card-title'>{props.name}</h3>
                 </a>
                 

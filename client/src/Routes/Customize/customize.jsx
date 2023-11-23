@@ -94,7 +94,7 @@ export const Customize = (props) => {
                     </a>
                 </li>
                 <li className='custom-song-button-container'>
-                    <Link to={'/ranking'} className='begin-ranking-button'>
+                    <Link to={'/ranking'} className='custom-song-button'>
                         Start Ranking
                     </Link>
                 </li>
@@ -105,6 +105,7 @@ export const Customize = (props) => {
                 state={modal}
                 toggleModal={toggleModal}
             />}
+            <hr className='custom-songs-divider'></hr>
             <ul className='custom-songs-container'>
                 {customSongs.map(
                     (item, index) => {

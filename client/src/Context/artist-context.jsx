@@ -42,20 +42,24 @@ export default function ArtistContextProvider(props){
     // used on customize page
     const createFinalSongs = () => {
         let songCount = 0;
-        let songs = {}; // Make a copy of the current state
+        let songs = {};
+        // hash table to help look up duplicates in O(1)
+        let songTitles = {};
         for (const album of artistData.albums) {
             if (!album.isIncluded) {
             continue;
             }
-        
             for (const track of album.tracks) {
-                if (!(track in songs)) {
+                if (!(track in songTitles)) {
                     songs[songCount] = {
                     name:track,    
                     album: album.name,
                     cover: album.cover,
                     isIncluded: true,
                     };
+
+                    songTitles[track] = track;
+
                     songCount++;
                 }
             }
@@ -65,12 +69,15 @@ export default function ArtistContextProvider(props){
             if (!single.isIncluded) {
                 continue;
                 }
-            if (!(single.name in songs)) {
+            if (!(single.name in songTitles)) {
                 songs[songCount] = {
                 name:single.name,    
                 cover: single.cover,
                 isIncluded: true,
                 };
+
+                songTitles[single.name] = single.name;
+
                 songCount++;
             }
         }
@@ -135,8 +142,7 @@ export default function ArtistContextProvider(props){
         setSongCount(0);
     }
 
-    // not used atm
-    const checkDupe = (songTitle) => {
+    const checkDupe = (songTitle, songArr) => {
 
         for(const [key, value] of Object.entries(finalSongs)){
             if(songTitle.toLowerCase() === value.name.toLowerCase()){
