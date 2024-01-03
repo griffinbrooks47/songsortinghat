@@ -35,6 +35,8 @@ class Algorithm:
         # finds the songs the lowest-score-song is looking for
         missing_songs = self.songs[lowest]['missing']
 
+        print(missing_songs)
+
         # removes the excluded songs from the match pool
 
         for exclusion in excluded:
@@ -190,7 +192,7 @@ class Algorithm:
             
 
 
-songs_list = ['Am I wrong', 'Mirrors', 'Down', 'Chloe', 'Miss Independent', 'Sunday Candy', 'No Problem', 'Nothing', 'Breakeven', 'Demons']
+songs_list = ["ITAKU", "Yikes", "All Mine", "Wouldn't Leave", "No Mistakes", "Ghost Town", "Violent Crimes"]
 random.shuffle(songs_list)
 
 algorithm = Algorithm(songs_list)

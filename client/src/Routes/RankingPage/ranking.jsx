@@ -26,7 +26,7 @@ export const Ranking = () => {
         <main className="ranking">
             {stage ? (
                 <StageOne 
-                    capacity={12}
+                    capacity={20}
                     setStageTwo={setStageTwo}
                 />
                 ) : (
@@ -122,7 +122,7 @@ export const StageOne = (props) => {
         <div className="stage-one">
             <h2 className="stage-one-header">Choose Your Favorites</h2>
             <div className="stage-one-desc">
-                The songs you select will continue to the final ranking stage!
+                The songs you select will continue to the final ranking stage. <br></br> Note: Selecting a large number of songs may make the next stage take a long time. Choose wisely!
             </div>
             <hr className="stage-one-divider"></hr>
             <ul className="stage-one-buttons">
@@ -173,7 +173,7 @@ export const StageOneSong = (props) => {
 
     const variants = {
         off: { 
-            opacity: 0.3,
+            opacity: 0.4,
             scale: 1,
             boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.2)",
         },
@@ -241,11 +241,18 @@ export const StageTwo = (props) => {
             if (missingIdx !== -1) {
                 missingCandidates.splice(missingIdx, 1);
               }
+
+            let missingFinal = [];
+
+            for(const missingCandidate of missingCandidates){
+                missingFinal.push(missingCandidate.name);
+            }
+
             currSongData[candidate.name] = {
                 above:[],
                 below:[],
                 score:0,
-                missing:missingCandidates,
+                missing:missingFinal,
                 pass:false,
                 rank:null
             }
@@ -257,8 +264,8 @@ export const StageTwo = (props) => {
     const [stageTwoSongs, setStageTwoSongs] = useState([]);
 
     // react variables
-    const [choiceOne, setChoiceOne] = useState({});
-    const [choiceTwo, setChoiceTwo] = useState({});
+    const [choiceOne, setChoiceOne] = useState('');
+    const [choiceTwo, setChoiceTwo] = useState('');
 
     // algorithm variables
     const [songData, setSongData] = useState(() => initSongData());
@@ -279,7 +286,7 @@ export const StageTwo = (props) => {
         let minValue = songCount+1;
 
         for (const songDataKey in songDataCopy) {
-            let currentValue = songDataCopy[songDataKey].score;
+            let currentValue = songDataCopy[songDataKey]['score'];
             if (currentValue < minValue) {
               minValue = currentValue;
               minKey = songDataKey;
@@ -292,7 +299,7 @@ export const StageTwo = (props) => {
 
         let songDataCopy = {...songData};
 
-        let missingSongs = songData[lowest]['missing'];
+        let missingSongs = songDataCopy[lowest]['missing'];
 
         for(const exclusion in excluded) {
             if(exclusion in missingSongs){
@@ -303,45 +310,300 @@ export const StageTwo = (props) => {
             }
         }
 
-        let minKey = null;
+        let minData = null;
         let minValue = songCount+1;
 
-        for (const missingDataKey in missingSongs) {
-            let currentValue = songDataCopy[missingDataKey].score;
+        for (const missingData of missingSongs) {
+            let currentValue = songDataCopy[missingData]['score'];
             if (currentValue < minValue) {
               minValue = currentValue;
-              minKey = missingDataKey;
+              minData = missingData;
             }
         }
 
-        return missingSongs[minKey]
-
-
-    }
-    const inherit = (winner, loser) => {
+        return minData;
 
     }
-    const secondaryInherit = (winner, loser) => {
+    const inherit = (winner, loser, songDataObj) => {
+
+        // need winner aboves in loser aboves
+        // need loser belows in winner belows
+
+        const winnerAboves = songDataObj[winner]['above'];
+        
+        for(const winnerAbove of winnerAboves){
+            if(songDataObj[loser]['missing'].includes(winnerAbove)){
+                songDataObj[loser]['above'].push(winnerAbove);
+
+                console.log("" + loser + " inherits above " + winnerAbove)
+                
+                let missingIdx = songDataObj[loser]['missing'].indexOf(winnerAbove);
+                songDataObj[loser]['missing'].splice(missingIdx, 1);
+
+            }
+        }
+
+        const loserBelows = songDataObj[loser]['below'];
+
+        for(const loserBelow of loserBelows){
+            if(songDataObj[winner]['missing'].includes(loserBelow)){
+                songDataObj[winner]['below'].push(loserBelow);
+
+                console.log("" + winner + " inherits below " + loserBelow)
+
+                let missingIdx = songDataObj[winner]['missing'].indexOf(loserBelow);
+                songDataObj[winner]['missing'].splice(missingIdx, 1);
+            }
+        }
+
+        //secondaryInherit(winner, loser, songDataObj);
+
+        updateScores(songDataObj);
+    }
+
+    const secondaryInherit = (winner, loser, songDataObj) => {
+
+        // go thru winner aboves list, each adds loserBelows to its below list
+        // go thru loser below list, each adds winnerAboves to its above list
+
+        let winnerAboves = songDataObj[winner]['above'];
+        let loserBelows = songDataObj[loser]['below'];
+
+        for(const winnerAbove of winnerAboves){
+
+            let winnerAboveMissing = songDataObj[winnerAbove]['missing'];
+
+            for(const loserBelow of loserBelows){
+
+                let loserBelowBelows = songDataObj[loserBelow]['below'];
+
+                for(const loserBelowBelow of loserBelowBelows){
+
+                    console.log("searched")
+
+                    if(winnerAboveMissing.includes(loserBelowBelow)){
+                        
+                        songDataObj[winnerAbove]['below'].push(loserBelowBelow)
+
+                        console.log("Secondary Inherit: Above")
+
+                        let missingIdx = songDataObj[winnerAbove]['missing'].indexOf(loserBelowBelow);
+                        songDataObj[winnerAbove]['missing'].splice(missingIdx, 1);
+
+                    }
+
+                }
+
+            }
+
+        }
+
+        for(const loserBelow of loserBelows){
+
+            let loserBelowMissing = songDataObj[loserBelow]['missing'];
+
+            for(const winnerAbove of winnerAboves){
+
+                let winnerAboveAboves = songDataObj[winnerAbove]['above'];
+
+                for(const winnerAboveAbove of winnerAboveAboves){
+
+                    console.log("searched")
+
+                    if(loserBelowMissing.includes(winnerAboveAbove)){
+                        
+                        songDataObj[loserBelow]['above'].push(winnerAboveAbove)
+
+                        console.log("Secondary Inherit: Below")
+
+                        let missingIdx = songDataObj[loserBelow]['missing'].indexOf(winnerAboveAbove);
+                        songDataObj[loserBelow]['missing'].splice(missingIdx, 1);
+
+                    }
+
+                }
+
+            }
+
+        }       
+
+        updateScores(songDataObj);
+    }
+    const updateScores = (songDataObj) => {
+
+        for(const songDataKey in songDataObj){
+
+            let above = songDataObj[songDataKey]['above'].length
+            let below = songDataObj[songDataKey]['below'].length
+
+            let score = above + below;
+
+            songDataObj[songDataKey]['score'] = score;
+            songDataObj[songDataKey]['match_score'] = score;
+
+            songDataObj[songDataKey]['rank'] = 1 + above;
+
+            let missingNum = songDataObj[songDataKey]['missing'].length;
+            songDataObj[songDataKey]['pass'] = (missingNum == 0);
+
+        }
+
+        setSongData(songDataObj);
+
+        if(ranking && checkIfFinished(songDataObj)){
+            setChoices(songDataObj);
+        } else {
+            setRanking(false);
+            console.log("Finished")
+        }
 
     }
-    const updateScores = () => {
+
+    const checkIfFinished = (songDataObj) => {
+        
+        let totalMissing = 0;
+
+        for(const songDataKey in songDataObj){
+            totalMissing += songDataObj[songDataKey]['missing'].length;
+        }
+
+        console.log(totalMissing);
+
+        if(totalMissing == 0){
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    const setChoices = (songDataObj) => {
+
+        let lowest_skips = [];
+
+        for(const songDataKey in songDataObj){
+            if(songDataObj[songDataKey]['pass'] == true){
+                lowest_skips.push(songDataKey);
+            }
+        }
+
+        let lowest = findLowestScore(lowest_skips);
+        let skips = [lowest,];
+
+        let highest = findHighestPotential(skips, lowest);
+
+        console.log(lowest, highest);
+
+        setChoiceOne(lowest);
+        setChoiceTwo(highest);
+    }
+
+    // choice is either 1 or 2
+    const iteration = (choice) => {
+
+        let songDataCopy = {...songData};
+        
+        if(choice == 1){
+            
+            if(!songDataCopy[choiceOne]['below'].includes(choiceTwo)){
+                
+                songDataCopy[choiceOne]['below'].push(choiceTwo);
+
+                if(songDataCopy[choiceOne]['missing'].includes(choiceTwo)){
+                    let choiceTwoIdx = songDataCopy[choiceOne]['missing'].indexOf(choiceTwo);
+                    songDataCopy[choiceOne]['missing'].splice(choiceTwoIdx, 1);
+                }
+
+            }
+
+            if(!songDataCopy[choiceTwo]['above'].includes(choiceOne)){
+                
+                songDataCopy[choiceTwo]['above'].push(choiceOne);
+
+                if(songDataCopy[choiceTwo]['missing'].includes(choiceOne)){
+                    let choiceOneIdx = songDataCopy[choiceTwo]['missing'].indexOf(choiceOne);
+                    songDataCopy[choiceTwo]['missing'].splice(choiceOneIdx, 1);
+                }
+
+            }
+
+            inherit(choiceOne, choiceTwo, songDataCopy);
+
+        } else if(choice == 2){
+
+            if(!songDataCopy[choiceTwo]['below'].includes(choiceOne)){
+                
+                songDataCopy[choiceTwo]['below'].push(choiceOne);
+
+                if(songDataCopy[choiceTwo]['missing'].includes(choiceOne)){
+                    let choiceOneIdx = songDataCopy[choiceTwo]['missing'].indexOf(choiceOne);
+                    songDataCopy[choiceTwo]['missing'].splice(choiceOneIdx, 1);
+                }
+
+            }
+
+            if(!songDataCopy[choiceOne]['above'].includes(choiceTwo)){
+                
+                songDataCopy[choiceOne]['above'].push(choiceTwo);
+
+                if(songDataCopy[choiceOne]['missing'].includes(choiceTwo)){
+                    let choiceTwoIdx = songDataCopy[choiceOne]['missing'].indexOf(choiceTwo);
+                    songDataCopy[choiceOne]['missing'].splice(choiceTwoIdx, 1);
+                }
+
+            }
+
+            inherit(choiceTwo, choiceOne, songDataCopy);   
+
+        } else {
+            console.log("Invalid Choice");
+        }
 
     }
-    const iteration = () => {
 
-    }
     const completeRankings = () => {
 
     }
 
     return (
         <div className="stage-two">
-            <button onClick={() => {
-                
-                
+            <button className="check-data" onClick={() => {
+
+                let songDataCopy = {...songData};
+                setChoices(songDataCopy);
+
             }}>
-                Check Data
+                SetChoices
             </button>
+            <button onClick={()=>{
+                console.log(songData);
+            }}>
+                Check Songs
+            </button>
+            <h2 className="stage-two-header">Pick The Better Song</h2>
+            <hr></hr>
+            <ul className="stage-two-options">
+                <li className="stage-two-option">
+                    <a className="stage-two-option-tag" onClick={() => {
+                        iteration(1);
+                    }}>
+                        <img className="stage-two-option-img"></img>
+                        <div className="stage-two-option-title">
+                            {choiceOne}
+                        </div>
+                    </a>
+                </li>
+                <li className="stage-two-option">
+                    <a className="stage-two-option-tag" onClick={() => {
+                        iteration(2);
+                    }}>
+                        <img className="stage-two-option-img"></img>
+                        <div className="stage-two-option-title">
+                            {choiceTwo}
+                        </div>
+                    </a>
+                </li>
+            </ul>
+
         </div>
     )
 }
