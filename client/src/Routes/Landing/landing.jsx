@@ -92,14 +92,20 @@ export const Landing = () => {
     return (
         <main className='landing'>
             <div className='landing-container'>
-                <h1 className='landing-title'>Search</h1>
+                {!artistLoaded && 
+                    <div className='logo'>
+                        Logo Here
+                    </div>
+                }
                 {artistLoaded && 
                 <ArtistProfile name={artist} picture={picture}/>
                 }
-                <form className='search-form' onSubmit={handleSubmit(onSubmit)}>
-                    <input type='text' className='search-bar' {...register("artist")}/>
-                    <img className='search-icon' src={icons.search}/>
-                </form>
+                {!artistLoaded &&
+                    <form className='search-form' onSubmit={handleSubmit(onSubmit)}>
+                        <input type='text' className='search-bar' {...register("artist")}/>
+                        <img className='search-icon' src={icons.search}/>
+                    </form>
+                }
             </div>
         </main>
     )

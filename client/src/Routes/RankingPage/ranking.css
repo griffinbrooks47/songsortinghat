@@ -92,27 +92,40 @@
     margin-left: 0.75rem;
 }
 
+
+
+
 .stage-two{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
     margin-inline: auto;
+    min-height: 20rem;
+    height: 100vh;
 }
 .check-data{
     
 }
 .stage-two-header{
     margin: auto;
+    font-size: 1.5rem;
+}
+.stage-two-divider{
+    border: 0.1px solid #00000031;
+    width: 90%;
+    margin-inline: auto;
 }
 .stage-two-options{
-    background-color: antiquewhite;
     display: flex;
+    flex-direction: row;
     justify-content: center;
     align-items: center;
 }
+
 .stage-two-option{
     display: flex;
-    width: 15rem;
+    width: 20rem;
+    height: 20rem;
+    background-color: white;
+    border-radius: 0.5rem;
+    margin-inline: 0.5rem;
 }
 .stage-two-option-tag{
     cursor: pointer;

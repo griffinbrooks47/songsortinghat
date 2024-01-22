@@ -219,6 +219,150 @@ export const StageOneSong = (props) => {
 
 export const StageTwo = (props) => {
 
+     // temporary REMOVE WHEN COMPLETE
+     const [devSongData, setDevSongData] = useState(
+
+        {
+            "I Thought About Killing You": {
+                "above": [],
+                "below": [],
+                "score": 0,
+                "missing": [
+                    "Yikes",
+                    "All Mine",
+                    "Wouldn't Leave",
+                    "No Mistakes",
+                    "Ghost Town",
+                    "Violent Crimes"
+                ],
+                "pass": false,
+                "rank": null,
+                "data": {
+                    "album": "ye",
+                    "cover": "https://i.scdn.co/image/ab67616d0000b2730cd942c1a864afa4e92d04f2"
+                }
+            },
+            "Yikes": {
+                "above": [],
+                "below": [],
+                "score": 0,
+                "missing": [
+                    "I Thought About Killing You",
+                    "All Mine",
+                    "Wouldn't Leave",
+                    "No Mistakes",
+                    "Ghost Town",
+                    "Violent Crimes"
+                ],
+                "pass": false,
+                "rank": null,
+                "data": {
+                    "album": "ye",
+                    "cover": "https://i.scdn.co/image/ab67616d0000b2730cd942c1a864afa4e92d04f2"
+                }
+            },
+            "All Mine": {
+                "above": [],
+                "below": [],
+                "score": 0,
+                "missing": [
+                    "I Thought About Killing You",
+                    "Yikes",
+                    "Wouldn't Leave",
+                    "No Mistakes",
+                    "Ghost Town",
+                    "Violent Crimes"
+                ],
+                "pass": false,
+                "rank": null,
+                "data": {
+                    "album": "ye",
+                    "cover": "https://i.scdn.co/image/ab67616d0000b2730cd942c1a864afa4e92d04f2"
+                }
+            },
+            "Wouldn't Leave": {
+                "above": [],
+                "below": [],
+                "score": 0,
+                "missing": [
+                    "I Thought About Killing You",
+                    "Yikes",
+                    "All Mine",
+                    "No Mistakes",
+                    "Ghost Town",
+                    "Violent Crimes"
+                ],
+                "pass": false,
+                "rank": null,
+                "data": {
+                    "album": "ye",
+                    "cover": "https://i.scdn.co/image/ab67616d0000b2730cd942c1a864afa4e92d04f2"
+                }
+            },
+            "No Mistakes": {
+                "above": [],
+                "below": [],
+                "score": 0,
+                "missing": [
+                    "I Thought About Killing You",
+                    "Yikes",
+                    "All Mine",
+                    "Wouldn't Leave",
+                    "Ghost Town",
+                    "Violent Crimes"
+                ],
+                "pass": false,
+                "rank": null,
+                "data": {
+                    "album": "ye",
+                    "cover": "https://i.scdn.co/image/ab67616d0000b2730cd942c1a864afa4e92d04f2"
+                }
+            },
+            "Ghost Town": {
+                "above": [],
+                "below": [],
+                "score": 0,
+                "missing": [
+                    "I Thought About Killing You",
+                    "Yikes",
+                    "All Mine",
+                    "Wouldn't Leave",
+                    "No Mistakes",
+                    "Violent Crimes"
+                ],
+                "pass": false,
+                "rank": null,
+                "data": {
+                    "album": "ye",
+                    "cover": "https://i.scdn.co/image/ab67616d0000b2730cd942c1a864afa4e92d04f2"
+                }
+            },
+            "Violent Crimes": {
+                "above": [],
+                "below": [],
+                "score": 0,
+                "missing": [
+                    "I Thought About Killing You",
+                    "Yikes",
+                    "All Mine",
+                    "Wouldn't Leave",
+                    "No Mistakes",
+                    "Ghost Town"
+                ],
+                "pass": false,
+                "rank": null,
+                "data": {
+                    "album": "ye",
+                    "cover": "https://i.scdn.co/image/ab67616d0000b2730cd942c1a864afa4e92d04f2"
+                }
+            }
+        }
+
+    )
+    const initDevData = () => {
+        return devSongData;
+    }
+
     const { finalSongs, songCount } = useArtistContext();
 
     const initStageTwoSongs = () => {
@@ -254,7 +398,11 @@ export const StageTwo = (props) => {
                 score:0,
                 missing:missingFinal,
                 pass:false,
-                rank:null
+                rank:null,
+                data:{
+                    album:candidate.album,
+                    cover:candidate.cover
+                }
             }
         }
         return currSongData;
@@ -268,7 +416,8 @@ export const StageTwo = (props) => {
     const [choiceTwo, setChoiceTwo] = useState('');
 
     // algorithm variables
-    const [songData, setSongData] = useState(() => initSongData());
+    const [songData, setSongData] = useState(() => initDevData());
+
     const [ranking, setRanking] = useState(true);
     const [skips, setSkips] = useState([]);
     const [prevLowest, setPrevLowest] = useState("");
@@ -324,158 +473,6 @@ export const StageTwo = (props) => {
         return minData;
 
     }
-    const inherit = (winner, loser, songDataObj) => {
-
-        // need winner aboves in loser aboves
-        // need loser belows in winner belows
-
-        const winnerAboves = songDataObj[winner]['above'];
-        
-        for(const winnerAbove of winnerAboves){
-            if(songDataObj[loser]['missing'].includes(winnerAbove)){
-                songDataObj[loser]['above'].push(winnerAbove);
-
-                console.log("" + loser + " inherits above " + winnerAbove)
-                
-                let missingIdx = songDataObj[loser]['missing'].indexOf(winnerAbove);
-                songDataObj[loser]['missing'].splice(missingIdx, 1);
-
-            }
-        }
-
-        const loserBelows = songDataObj[loser]['below'];
-
-        for(const loserBelow of loserBelows){
-            if(songDataObj[winner]['missing'].includes(loserBelow)){
-                songDataObj[winner]['below'].push(loserBelow);
-
-                console.log("" + winner + " inherits below " + loserBelow)
-
-                let missingIdx = songDataObj[winner]['missing'].indexOf(loserBelow);
-                songDataObj[winner]['missing'].splice(missingIdx, 1);
-            }
-        }
-
-        //secondaryInherit(winner, loser, songDataObj);
-
-        updateScores(songDataObj);
-    }
-
-    const secondaryInherit = (winner, loser, songDataObj) => {
-
-        // go thru winner aboves list, each adds loserBelows to its below list
-        // go thru loser below list, each adds winnerAboves to its above list
-
-        let winnerAboves = songDataObj[winner]['above'];
-        let loserBelows = songDataObj[loser]['below'];
-
-        for(const winnerAbove of winnerAboves){
-
-            let winnerAboveMissing = songDataObj[winnerAbove]['missing'];
-
-            for(const loserBelow of loserBelows){
-
-                let loserBelowBelows = songDataObj[loserBelow]['below'];
-
-                for(const loserBelowBelow of loserBelowBelows){
-
-                    console.log("searched")
-
-                    if(winnerAboveMissing.includes(loserBelowBelow)){
-                        
-                        songDataObj[winnerAbove]['below'].push(loserBelowBelow)
-
-                        console.log("Secondary Inherit: Above")
-
-                        let missingIdx = songDataObj[winnerAbove]['missing'].indexOf(loserBelowBelow);
-                        songDataObj[winnerAbove]['missing'].splice(missingIdx, 1);
-
-                    }
-
-                }
-
-            }
-
-        }
-
-        for(const loserBelow of loserBelows){
-
-            let loserBelowMissing = songDataObj[loserBelow]['missing'];
-
-            for(const winnerAbove of winnerAboves){
-
-                let winnerAboveAboves = songDataObj[winnerAbove]['above'];
-
-                for(const winnerAboveAbove of winnerAboveAboves){
-
-                    console.log("searched")
-
-                    if(loserBelowMissing.includes(winnerAboveAbove)){
-                        
-                        songDataObj[loserBelow]['above'].push(winnerAboveAbove)
-
-                        console.log("Secondary Inherit: Below")
-
-                        let missingIdx = songDataObj[loserBelow]['missing'].indexOf(winnerAboveAbove);
-                        songDataObj[loserBelow]['missing'].splice(missingIdx, 1);
-
-                    }
-
-                }
-
-            }
-
-        }       
-
-        updateScores(songDataObj);
-    }
-    const updateScores = (songDataObj) => {
-
-        for(const songDataKey in songDataObj){
-
-            let above = songDataObj[songDataKey]['above'].length
-            let below = songDataObj[songDataKey]['below'].length
-
-            let score = above + below;
-
-            songDataObj[songDataKey]['score'] = score;
-            songDataObj[songDataKey]['match_score'] = score;
-
-            songDataObj[songDataKey]['rank'] = 1 + above;
-
-            let missingNum = songDataObj[songDataKey]['missing'].length;
-            songDataObj[songDataKey]['pass'] = (missingNum == 0);
-
-        }
-
-        setSongData(songDataObj);
-
-        if(ranking && checkIfFinished(songDataObj)){
-            setChoices(songDataObj);
-        } else {
-            setRanking(false);
-            console.log("Finished")
-        }
-
-    }
-
-    const checkIfFinished = (songDataObj) => {
-        
-        let totalMissing = 0;
-
-        for(const songDataKey in songDataObj){
-            totalMissing += songDataObj[songDataKey]['missing'].length;
-        }
-
-        console.log(totalMissing);
-
-        if(totalMissing == 0){
-            return false;
-        } else {
-            return true;
-        }
-    }
-
     const setChoices = (songDataObj) => {
 
         let lowest_skips = [];
@@ -499,111 +496,55 @@ export const StageTwo = (props) => {
 
     // choice is either 1 or 2
     const iteration = (choice) => {
+        console.log(choice);
+    }
 
+    useState(() => {
         let songDataCopy = {...songData};
-        
-        if(choice == 1){
-            
-            if(!songDataCopy[choiceOne]['below'].includes(choiceTwo)){
-                
-                songDataCopy[choiceOne]['below'].push(choiceTwo);
-
-                if(songDataCopy[choiceOne]['missing'].includes(choiceTwo)){
-                    let choiceTwoIdx = songDataCopy[choiceOne]['missing'].indexOf(choiceTwo);
-                    songDataCopy[choiceOne]['missing'].splice(choiceTwoIdx, 1);
-                }
-
-            }
-
-            if(!songDataCopy[choiceTwo]['above'].includes(choiceOne)){
-                
-                songDataCopy[choiceTwo]['above'].push(choiceOne);
-
-                if(songDataCopy[choiceTwo]['missing'].includes(choiceOne)){
-                    let choiceOneIdx = songDataCopy[choiceTwo]['missing'].indexOf(choiceOne);
-                    songDataCopy[choiceTwo]['missing'].splice(choiceOneIdx, 1);
-                }
-
-            }
-
-            inherit(choiceOne, choiceTwo, songDataCopy);
-
-        } else if(choice == 2){
-
-            if(!songDataCopy[choiceTwo]['below'].includes(choiceOne)){
-                
-                songDataCopy[choiceTwo]['below'].push(choiceOne);
-
-                if(songDataCopy[choiceTwo]['missing'].includes(choiceOne)){
-                    let choiceOneIdx = songDataCopy[choiceTwo]['missing'].indexOf(choiceOne);
-                    songDataCopy[choiceTwo]['missing'].splice(choiceOneIdx, 1);
-                }
-
-            }
-
-            if(!songDataCopy[choiceOne]['above'].includes(choiceTwo)){
-                
-                songDataCopy[choiceOne]['above'].push(choiceTwo);
-
-                if(songDataCopy[choiceOne]['missing'].includes(choiceTwo)){
-                    let choiceTwoIdx = songDataCopy[choiceOne]['missing'].indexOf(choiceTwo);
-                    songDataCopy[choiceOne]['missing'].splice(choiceTwoIdx, 1);
-                }
-
-            }
-
-            inherit(choiceTwo, choiceOne, songDataCopy);   
-
-        } else {
-            console.log("Invalid Choice");
-        }
-
-    }
-
-    const completeRankings = () => {
-
-    }
+        setChoices(songDataCopy);
+    }, [])
 
     return (
         <div className="stage-two">
-            <button className="check-data" onClick={() => {
-
-                let songDataCopy = {...songData};
-                setChoices(songDataCopy);
-
-            }}>
-                SetChoices
-            </button>
-            <button onClick={()=>{
-                console.log(songData);
-            }}>
-                Check Songs
-            </button>
             <h2 className="stage-two-header">Pick The Better Song</h2>
-            <hr></hr>
-            <ul className="stage-two-options">
-                <li className="stage-two-option">
-                    <a className="stage-two-option-tag" onClick={() => {
-                        iteration(1);
-                    }}>
-                        <img className="stage-two-option-img"></img>
-                        <div className="stage-two-option-title">
-                            {choiceOne}
-                        </div>
-                    </a>
-                </li>
-                <li className="stage-two-option">
-                    <a className="stage-two-option-tag" onClick={() => {
-                        iteration(2);
-                    }}>
-                        <img className="stage-two-option-img"></img>
-                        <div className="stage-two-option-title">
-                            {choiceTwo}
-                        </div>
-                    </a>
-                </li>
-            </ul>
+            
+            <hr className="stage-two-divider"></hr>
+           
+            {(choiceOne != '' || choiceTwo != '') && (
+                <ul className="stage-two-options">
+                    <StageTwoChoice 
+                        title={choiceOne}
+                        data={songData[choiceOne]['data']}
+                        iteration={()=>{
+                            iteration(1);
+                        }}
+                    />
+                    <StageTwoChoice 
+                        title={choiceTwo}
+                        data={songData[choiceTwo]['data']}
+                        iteration={()=>{
+                            iteration(2);
+                        }}
+                    />
+                </ul>
+            )}
 
         </div>
+    )
+}
+
+export const StageTwoChoice = (props) => {
+    return (
+        <li className="stage-two-option">
+            <a className="stage-two-option-tag" onClick={() => {
+                props.iteration();
+                console.log(props.data);
+            }}>
+                <img className="stage-two-option-img"></img>
+                <div className="stage-two-option-title">
+                    {props.title}
+                </div>
+            </a>
+        </li>
     )
 }

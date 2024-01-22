@@ -9,7 +9,36 @@ class Algorithm:
         for song in songs_list:
             self.songs[song] = Song(song, songs_list)
 
-    def find_cycles(self):
+    def iteration(self):
+        self.calculate_scores();
+    
+    # operates only on unlinked nodes, appends to current node tree
+    def find_next_matchup(self):
+        pass
+
+    # finds nodes with two outgoing edges, creates matchup to fix tree
+    def clean_tree(self):
+        # only use belows, compare above with top of tree
+        pass
+
+    # takes as input three nodes in order of best to worst, specified by user
+    def replace_edge(self, top, middle, bottom):
+        pass
+
+
+    def calculate_scores(self):
+        # all songs that need a score update
+        unchecked = set(self.songs.keys());
+
+        while len(unchecked) > 0:
+            song = list(unchecked)[0]
+            
+
+    
+
+
+
+    def break_cycles(self):
         pass
 
     def check_if_finished(self):
@@ -27,27 +56,26 @@ class Algorithm:
             unchecked.remove(curr_node[0].get_title())
             curr_node = curr_node.get_below()
 
+        # returns true if all songs are checked, false otherwise
         return len(unchecked) == 0;
-
-    def iteration(self):
-        for song, data in self.songs.items():
-            data.calculate_score()
 
 class Song:
     def __init__(self, title, songs_list):
         # song title used for lookup in dictionary
         self.title = title;
-        # next node in linked list
+        # next node in doubly linked list
+        self.above = [];
         self.below = [];
         # first node in linked list sequence above this node
         self.head = None;
         # set of songs not yet compared
         self.unknown = songs_list.copy();
-        # used for generating matchups
+        # integer representing +1 for every song below, 
         self.score = 0;
     
         self.unknown.remove(title);
     
+    # getter methods
     def get_head(self):
         return self.head
     def get_below(self):
@@ -55,11 +83,9 @@ class Song:
     def get_title(self):
         return self.title
     
-    def calculate_score(self):
-        pass
-
-    def get_below_tail(self):
-        pass
+    # setter methods
+    def set_score(self, new_score):
+        self.score = new_score;
 
     def add_edge(self, song_obj):
         if(self.below.isEmpty()):

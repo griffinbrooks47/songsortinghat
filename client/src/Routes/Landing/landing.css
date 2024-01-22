@@ -1,18 +1,26 @@
 .landing{
-    height: 65vh;
+    display: flex;
+    justify-content: center;
 }
 .landing-container{
-    height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: top;
     align-items: center;
 }
 .landing-title{
     font-family: 'Nanum Pen Script', cursive;
     margin-inline: auto;
+    margin: 0;
     margin-bottom: 0.5rem;
-    font-size: 4.5rem;
+    font-size: 2.5rem;
+}
+.logo{
+    height: 16rem;
+    width: 16rem;
+    margin-top: 5rem;
+    margin-bottom: 1rem;
+    background-color: aliceblue;
 }
 .search-form{
     position: relative;
@@ -55,7 +63,7 @@ search-bar::placeholder {
     height: 15rem;
     width: 35rem;
     margin-bottom: 1.5rem;
-    margin-top: 1rem;
+    margin-top: 10rem;
 }
 .artist-profile-picture{
     height: 13rem;
