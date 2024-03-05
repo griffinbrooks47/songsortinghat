@@ -67,6 +67,8 @@ export const Landing = () => {
             setArtist(data.artist[0].name)
             setPicture(data.artist[0].images[0].url)
             setArtistLoaded(true)
+
+            console.log(data);
         })
         .catch(err => {
             console.log(err)
@@ -102,7 +104,7 @@ export const Landing = () => {
                 }
                 {!artistLoaded &&
                     <form className='search-form' onSubmit={handleSubmit(onSubmit)}>
-                        <input type='text' className='search-bar' {...register("artist")}/>
+                        <input type='text' className='search-bar' placeholder={"Bruno Mars"} {...register("artist")}/>
                         <img className='search-icon' src={icons.search}/>
                     </form>
                 }

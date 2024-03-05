@@ -92,6 +92,7 @@ export const StageOne = (props) => {
         let songCounter = 0;
         let iteration = 0;
         let currSongs = {};
+        
         while(songCounter < totalSongCount){
             let currSongsIteration = [];
             if((totalSongCount-songCounter)/props.capacity >= 1) {
@@ -223,7 +224,7 @@ export const StageTwo = (props) => {
      const [devSongData, setDevSongData] = useState(
 
         {
-            "I Thought About Killing You": {
+            "ITAKY": {
                 "above": [],
                 "below": [],
                 "score": 0,
@@ -239,7 +240,8 @@ export const StageTwo = (props) => {
                 "rank": null,
                 "data": {
                     "album": "ye",
-                    "cover": "https://i.scdn.co/image/ab67616d0000b2730cd942c1a864afa4e92d04f2"
+                    "cover": "https://i.scdn.co/image/ab67616d0000b2730cd942c1a864afa4e92d04f2",
+                    "artists": "Kanye, Benny Blanco, Quavo, Takeoff, Offset, Justin Timberlake"
                 }
             },
             "Yikes": {
@@ -258,7 +260,8 @@ export const StageTwo = (props) => {
                 "rank": null,
                 "data": {
                     "album": "ye",
-                    "cover": "https://i.scdn.co/image/ab67616d0000b2730cd942c1a864afa4e92d04f2"
+                    "cover": "https://i.scdn.co/image/ab67616d0000b2730cd942c1a864afa4e92d04f2",
+                    "artists": "Kanye, Drake"
                 }
             },
             "All Mine": {
@@ -401,7 +404,8 @@ export const StageTwo = (props) => {
                 rank:null,
                 data:{
                     album:candidate.album,
-                    cover:candidate.cover
+                    cover:candidate.cover,
+                    artists:candidate.artists
                 }
             }
         }
@@ -416,7 +420,9 @@ export const StageTwo = (props) => {
     const [choiceTwo, setChoiceTwo] = useState('');
 
     // algorithm variables
-    const [songData, setSongData] = useState(() => initDevData());
+
+    //* USE  OR initSongData
+    const [songData, setSongData] = useState(() => initSongData());
 
     const [ranking, setRanking] = useState(true);
     const [skips, setSkips] = useState([]);
@@ -540,9 +546,17 @@ export const StageTwoChoice = (props) => {
                 props.iteration();
                 console.log(props.data);
             }}>
-                <img className="stage-two-option-img"></img>
-                <div className="stage-two-option-title">
-                    {props.title}
+                <img className="stage-two-option-img"
+                    src={props.data.cover}
+                ></img>
+
+                <div className="stage-two-option-data">
+                    <div className="stage-two-option-title">
+                        {props.title}
+                    </div>
+                    <div className="stage-two-option-artists">
+                        {props.data.artists}
+                    </div>
                 </div>
             </a>
         </li>

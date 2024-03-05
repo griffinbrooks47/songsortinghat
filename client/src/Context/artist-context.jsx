@@ -50,9 +50,10 @@ export default function ArtistContextProvider(props){
             continue;
             }
             for (const track of album.tracks) {
-                if (!(track in songTitles)) {
+                if (!(track.name in songTitles)) {
                     songs[songCount] = {
-                    name:track,    
+                    name:track.name,
+                    artists: track.artists,    
                     album: album.name,
                     cover: album.cover,
                     isIncluded: true,
@@ -66,6 +67,7 @@ export default function ArtistContextProvider(props){
         }
         
         for (const single of artistData.singles) {
+
             if (!single.isIncluded) {
                 continue;
                 }
@@ -73,6 +75,7 @@ export default function ArtistContextProvider(props){
                 songs[songCount] = {
                 name:single.name,    
                 cover: single.cover,
+                artists: single.artists,   
                 isIncluded: true,
                 };
 

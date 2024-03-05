@@ -18,25 +18,32 @@ class Algorithm:
 
     # finds nodes with two outgoing edges, creates matchup to fix tree
     def clean_tree(self):
-        # only use belows, compare above with top of tree
+        pass
+
+    # creates an edge between two nodes
+    def add_edge(self, top, bottom):
         pass
 
     # takes as input three nodes in order of best to worst, specified by user
     def replace_edge(self, top, middle, bottom):
         pass
 
-
-    def calculate_scores(self):
+    # traverses over all nodes recursively
+    def update_scores(self):
         # all songs that need a score update
-        unchecked = set(self.songs.keys());
+        for curr_song in self.songs.keys():
+            checked = self.calculate_score_helper(curr_song, checked);
 
-        while len(unchecked) > 0:
-            song = list(unchecked)[0]
-            
-
-    
-
-
+    def update_score_helper(self, curr_song):
+        
+        if(len(self.songs[curr_song].get_below()) == 0):
+            self.songs[curr_song].set_score(0);
+            return 0;
+        else:
+            score = len(self.songs[curr_song].get_below());
+            for child in self.songs[curr_song].get_below():
+                score += self.update_score_helper(child);
+            return score;    
 
     def break_cycles(self):
         pass
@@ -70,7 +77,7 @@ class Song:
         self.head = None;
         # set of songs not yet compared
         self.unknown = songs_list.copy();
-        # integer representing +1 for every song below, 
+        # 0 - top of tree, +inf bottom of tree
         self.score = 0;
     
         self.unknown.remove(title);

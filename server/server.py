@@ -65,9 +65,11 @@ def get_albums_by_artist_name(token, artist_id):
     return tracks
 
 def parse_json(data):
+
     albums = []
     singles = []
     for album in data['albums']:
+
         name = album['name']
         album_type = album['album_type']
         cover = album['images'][0]['url']
@@ -79,13 +81,36 @@ def parse_json(data):
             'tracks':[]
             }   
             for track in album['tracks']['items']:
-                album_data['tracks'].append(track['name'])
+                
+                track_data = {
+                    'name': track['name'],
+                    'artists': ''
+                };
+
+                artists_string = ''
+
+                for artist in track['artists']:
+                    artists_string += artist['name'] + ', '
+
+                track_data['artists'] = artists_string[:-2]
+
+                album_data['tracks'].append(track_data);
+            
             albums.append(album_data)
         else:
+
             single_data = {
                 'name':name,
-                'cover': cover
+                'cover': cover,
+                'artists': ''
             }
+
+            artists_string = ''
+
+            for artist in album["artists"]:
+                artists_string += artist['name'] + ', '
+
+            single_data['artists'] = artists_string[:-2]
             singles.append(single_data)
 
     return {
