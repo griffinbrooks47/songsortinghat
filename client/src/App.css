@@ -34,8 +34,9 @@ ul{
 }
 .nav-item-home-img{
     width: 2.75rem;
-    padding-top: 0.25rem;
+    padding-top: 0.5rem;
     opacity: 0.9;
+    left: 1.25rem;
     position: absolute;
     cursor: pointer;
 }
