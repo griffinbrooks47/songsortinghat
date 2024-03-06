@@ -95,18 +95,22 @@ export const Landing = () => {
         <main className='landing'>
             <div className='landing-container'>
                 {!artistLoaded && 
-                    <div className='logo'>
-                        Logo Here
-                    </div>
+                    <img className='logo' src={icons.logo_ssh}>
+                        
+                    </img>
                 }
                 {artistLoaded && 
-                <ArtistProfile name={artist} picture={picture}/>
+                <ArtistProfile name={artist} picture={picture} drawing={icons.goated_taste}/>
                 }
                 {!artistLoaded &&
-                    <form className='search-form' onSubmit={handleSubmit(onSubmit)}>
-                        <input type='text' className='search-bar' placeholder={"Bruno Mars"} {...register("artist")}/>
-                        <img className='search-icon' src={icons.search}/>
-                    </form>
+                    <>
+                        <form className='search-form' onSubmit={handleSubmit(onSubmit)}>
+                            <input type='text' className='search-bar' placeholder={"Bruno Mars"} {...register("artist")}/>
+                            <img className='search-icon' src={icons.search}/>
+                            <img src={icons.type_artist} className='search-drawing'></img>
+                        </form>
+                        <h2>current demo, website under construction</h2>
+                    </>
                 }
             </div>
         </main>
@@ -121,6 +125,7 @@ export const ArtistProfile = (props) => {
                 <Link to={'/catalogue'}>Start Ranking</Link>
             </div>
             <img className='artist-profile-picture' src={props.picture}/>
+            <img className="artist-profile-drawing" src={props.drawing}></img>
         </div>
     )
 }
