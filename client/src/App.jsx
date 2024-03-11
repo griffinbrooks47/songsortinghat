@@ -4,6 +4,7 @@ import { Catalogue } from './Routes/Catalogue/catalogue.jsx'
 import { Customize } from './Routes/Customize/customize.jsx'
 import { createBrowserRouter, createRoutesFromElements, RouterProvider, Route, Link, Outlet } from 'react-router-dom'
 import ArtistContextProvider from './Context/artist-context.jsx'
+import { useArtistContext } from './Context/artist-context.jsx'
 import { icons } from './assets/icons.jsx'
 
 import './App.css'
@@ -34,12 +35,14 @@ function App() {
 export default App
 
 const Root = () => {
+
+    const { refresh } = useArtistContext();
     
     return (
         <>
             <ul className='navbar'>
                 <li className='nav-item'>
-                    <Link to='/' className='nav-item-tag'></Link>
+                    <Link to='/' className='nav-item-tag' onClick={refresh}></Link>
                     <img className='nav-item-home-img' src={icons.logo_ssh}></img>
                 </li>
             </ul>

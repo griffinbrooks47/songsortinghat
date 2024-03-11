@@ -26,6 +26,19 @@ export default function ArtistContextProvider(props){
 
     const [songCount, setSongCount] = useState(0);
 
+    // Reset all artist data. 
+    const refresh = () => {
+        setArtist('');
+        setArtistLoaded(false);
+        setPicture('');
+        setId('');
+        setEnableAlbums(true);
+        setEnableSingles(true);
+        setFinalSongs(new Map());
+        setGlobalCustomSongs(new Map());
+        setSongCount(0);
+    }
+
     const setGlobalIncluded = (category, id, bool) => {
         let copyData = artistData;
         if(category == 'album'){
@@ -167,7 +180,8 @@ export default function ArtistContextProvider(props){
                 finalSongs, setFinalSongs, createFinalSongs, updateFinalSongs,
                 globalCustomSongs, setGlobalCustomSongs, addGlobalCustomSong, toggleGlobalCustomSong,
                 clearArtistData,
-                songCount
+                songCount,
+                refresh
                 }
             }
         >

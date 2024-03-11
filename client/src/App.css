@@ -26,7 +26,7 @@ ul{
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 100%;
+    width: 3rem;
     height: 100%;
     font-size: 1.1rem;
     text-decoration: none;
@@ -36,7 +36,8 @@ ul{
     width: 2.75rem;
     padding-top: 0.5rem;
     opacity: 0.9;
-    left: 1.25rem;
+    left: 1.5rem;
     position: absolute;
     cursor: pointer;
+    z-index: -900;
 }
