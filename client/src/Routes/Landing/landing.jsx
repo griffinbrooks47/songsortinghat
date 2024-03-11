@@ -14,7 +14,7 @@ export const Landing = () => {
     const { artist, setArtist, artistLoaded, setArtistLoaded, picture, setPicture, id, setId, artistData, setArtistData, catalogue, addToCatalogue, clearArtistData } = useArtistContext();
 
     // API request
-    const api_url = 'http://localhost:5000/search?artist='
+    const api_url = 'http://gbrooks.pythonanywhere.com/search?artist='
 
     const deluxe_keywords = ["deluxe", "expanded", "bonus", "anniversary", "remastered", "extended", "complete", "collectors edition"];
 

@@ -42,9 +42,6 @@ const Root = () => {
                     <Link to='/' className='nav-item-tag'></Link>
                     <img className='nav-item-home-img' src={icons.logo_ssh}></img>
                 </li>
-                <li className='nav-item'>
-                    <Link to='/ranking' className='nav-item-tag'>Current Page</Link>
-                </li>
             </ul>
             <div>
                 <Outlet />
