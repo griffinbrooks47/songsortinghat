@@ -76,7 +76,8 @@ export const Landing = () => {
             setArtistData(data)
             setArtist(data.artist[0].name)
             setPicture(data.artist[0].images[0].url)
-            setArtistLoaded(true)
+            setArtistLoaded(true);
+            setRequested(false);
 
             console.log(data);
         })
