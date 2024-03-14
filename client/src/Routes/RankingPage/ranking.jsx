@@ -26,7 +26,7 @@ export const Ranking = () => {
         <main className="ranking">
             {stage ? (
                 <StageOne 
-                    capacity={20}
+                    capacity={12}
                     setStageTwo={setStageTwo}
                 />
                 ) : (

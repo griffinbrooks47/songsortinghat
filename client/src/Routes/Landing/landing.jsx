@@ -6,20 +6,30 @@ import { yupResolver} from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { useNavigate, Link } from "react-router-dom"
 import { Catalogue } from '../Catalogue/catalogue'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
+import { LazyLoadImage } from "react-lazy-load-image-component"
+import { zoomies, waveform, lineWobble } from 'ldrs'
 
 export const Landing = () => {
 
-    // artist data
+    // Global artist data.
     const { artist, setArtist, artistLoaded, setArtistLoaded, picture, setPicture, id, setId, artistData, setArtistData, catalogue, addToCatalogue, clearArtistData } = useArtistContext();
 
-    // API request
+    // API request url.
     const api_url = 'https://gbrooks.pythonanywhere.com/search?artist='
+
+    // Signals that a request has been made to the backend. 
+    const [requested, setRequested] = useState(false);
+
+    waveform.register();
+    zoomies.register();
+    lineWobble.register(); //obble.register(); //obble.register();
 
     const deluxe_keywords = ["deluxe", "expanded", "bonus", "anniversary", "remastered", "extended", "complete", "collectors edition"];
 
     useEffect(() => {
         clearArtistData();
+        setRequested(false);
     }, [])
 
     // not fully implemented yet
@@ -87,6 +97,7 @@ export const Landing = () => {
     let navigate = useNavigate();
 
     const onSubmit = (data) => {
+        setRequested(true);
         let search_query = api_url + data.artist
         fetchData(search_query)
     }
@@ -95,21 +106,30 @@ export const Landing = () => {
         <main className='landing'>
             <div className='landing-container'>
                 {!artistLoaded && 
-                    <img className='logo' src={icons.logo_ssh}>
-                        
-                    </img>
+                    <img className='logo' src={icons.logo_ssh} />
                 }
                 {artistLoaded && 
                 <ArtistProfile name={artist} picture={picture} drawing={icons.goated_taste}/>
                 }
-                {!artistLoaded &&
+                {!artistLoaded && !requested &&
                     <>
                         <form className='search-form' onSubmit={handleSubmit(onSubmit)}>
                             <input type='text' className='search-bar' placeholder={"Bruno Mars"} {...register("artist")}/>
                             <img className='search-icon' src={icons.search}/>
                             <img src={icons.type_artist} className='search-drawing'></img>
                         </form>
-                        <h2>current demo, website under construction</h2>
+                        <h3>current demo, website under construction</h3>
+                    </>
+                }
+                {requested && !artistLoaded &&
+                    <>                      
+                        <l-line-wobble
+                        size="100"
+                        stroke="5"
+                        bg-opacity="0.1"
+                        speed="2.8" 
+                        color="black" 
+                        ></l-line-wobble>
                     </>
                 }
             </div>
@@ -124,8 +144,13 @@ export const ArtistProfile = (props) => {
                 <h1 className='artist-profile-title'>{props.name}</h1>
                 <Link to={'/catalogue'}>Start Ranking</Link>
             </div>
-            <img className='artist-profile-picture' src={props.picture}/>
-            <img className="artist-profile-drawing" src={props.drawing}></img>
+            <LazyLoadImage 
+                className='artist-profile-picture'
+                alt='image'
+                src={props.picture}
+                effect='blur'
+                placeholderSrc="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/w+GHwAItwJ3OrKbAAAAABJRU5ErkJggg=="
+            />
         </div>
     )
 }

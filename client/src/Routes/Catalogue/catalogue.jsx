@@ -114,7 +114,6 @@ const FramerAlbumCard = (props) => {
                 variants={variants}
             >
             <li className='framer-album-card'>
-                
                 <a className='album-card-tag' onClick={toggleActive}>
                     <img src={props.cover} className='album-card-cover' loading='lazy'></img>
                     <h3 className='album-card-title'>{props.name}</h3>
