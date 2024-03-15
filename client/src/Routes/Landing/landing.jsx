@@ -142,8 +142,9 @@ export const ArtistProfile = (props) => {
     return (
         <div className='artist-profile'>
             <div className='artist-profile-info'>
+                <span className='artist-profile-label'>Your Artist:</span>
                 <h1 className='artist-profile-title'>{props.name}</h1>
-                <Link to={'/catalogue'}>Start Ranking</Link>
+                <Link className="artist-profile-button" to={'/catalogue'}>Start Ranking</Link>
             </div>
             <LazyLoadImage 
                 className='artist-profile-picture'
