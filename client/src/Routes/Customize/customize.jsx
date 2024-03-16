@@ -182,10 +182,10 @@ export const CustomSongModal = (props) => {
                 <div className='custom-song-modal'>
                     <h3 className='custom-song-modal-header'>Create Custom Song</h3>
                     <div className='custom-song-modal-field'>
-                        <form onSubmit={handleSubmit(onSubmit)}>
-                            <div>Song Title:</div>
+                        <form onSubmit={handleSubmit(onSubmit)} className="custom-song-modal-form">
+                            <div className='custom-song-modal-subheader'>Song Title:</div>
                             <input type='text' placeholder='e.g. Dance Now' {...register("name")}></input>
-                            <div>Optional Album Title:</div>
+                            <div className='custom-song-modal-subheader'>Optional Album Title:</div>
                             <select {...register("album")}>
                                 <option value={"none"}>
                                     None
