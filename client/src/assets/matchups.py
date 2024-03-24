@@ -1,13 +1,13 @@
 
 
 class Matchup:
-    def __init__(self, first, second):
-        self.first = first
-        self.second = second
-    def get_first(self):
-        return self.first
-    def get_second(self):
-        return self.second
+    def __init__(self, first_title, second_title):
+        self.left = first_title
+        self.right = second_title
+    def get_left(self):
+        return self.left
+    def get_right(self):
+        return self.right
 
 class Matchups:
     def __init__(self):
@@ -25,6 +25,9 @@ class Matchups:
     def get_length(self):
         return len(self.matchups);
 
+    def isEmpty(self):
+        return len(self.matchups) == 0;
+
     def check_if_dupe(self, new_matchup):
         for matchup in self.matchups:
             if self.compare_matchups(matchup, new_matchup):
@@ -32,9 +35,9 @@ class Matchups:
         return False
     
     def compare_matchups(self, first_matchup, second_matchup):
-        if first_matchup.get_first() == second_matchup.get_first() and first_matchup.get_second() == second_matchup.get_second():
+        if first_matchup.get_left() == second_matchup.get_left() and first_matchup.get_right() == second_matchup.get_right():
             return True
-        if first_matchup.get_first() == second_matchup.get_second() and first_matchup.get_second() == second_matchup.get_first():
+        if first_matchup.get_left() == second_matchup.get_right() and first_matchup.get_right() == second_matchup.get_left():
             return True
         else:
             return False

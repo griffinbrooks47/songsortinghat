@@ -1,73 +1,218 @@
 
+import math
 from matchups import Matchups, Matchup
 from song import Song
 
 class Algorithm:
 
-    def __init__(self, songs_list):
-        # queue for user question matchups
+    def __init__(self, set_of_songs):
+
+        # Queue for user question matchups.
         self.matchups = Matchups()
+
+        # Songs not yet on the tree. 
+        self.songs_set = set_of_songs
+
+        # Indicates if tree is finalized. 
+        self.complete = False;
+
+        # Displayed song choices for current iteration
+        self.curr_matchup = None;
+
         # maps song titles to song objects
-        self.songs = {}
-        for song in songs_list:
-            self.songs[song] = Song(song, songs_list)
+        self.songs_map = {}
+        for title in set_of_songs:
+            self.songs_map[title] = Song(title)
 
-    def iteration(self):
-        self.calculate_scores();
+        # maps title to score
+        self.score_map = {}
+
+        # maps scores to the set of titles with that score
+        self.reverse_score_map = {}
+
+    def run_algorithm(self):
+
+        # Initialize first matchup
+        first_title = list(self.songs_set)[0]
+        self.songs_set.discard(first_title)
+
+        second_title = list(self.songs_set)[0]
+        self.songs_set.discard(second_title)
+
+        self.curr_matchup = Matchup(first_title, second_title)
+
+        # Algorithm loop
+        while not self.complete:
+
+            left_title = self.curr_matchup.get_left()
+            right_title = self.curr_matchup.get_right()
+
+            print("1: " + left_title)
+            print("2: " + right_title)
+            user_choice = input("");
+
+            # Handles user choice. 
+            if(user_choice == "1"):
+                self.handle_choice(left_title, right_title)
+            elif(user_choice == "2"):
+                self.handle_choice(right_title, left_title)
+            else:
+                continue;
     
-    # operates only on unlinked nodes, appends to current node tree
-    def find_next_matchup(self):
-        pass
+            # Runs iteration.
+            self.iteration();
+            print("_________________")
 
-    # finds nodes with two outgoing edges, creates matchup to fix tree
-    def clean_tree(self):
-        pass
-
-    # creates an edge between two nodes
-    def add_edge(self, top, bottom):
-        pass
-
-    # takes as input three nodes in order of best to worst, specified by user
-    def replace_edge(self, top, middle, bottom):
-        pass
-
-    # traverses over all nodes recursively
-    def update_scores(self):
-        # all songs that need a score update
-        for curr_song in self.songs.keys():
-            checked = self.calculate_score_helper(curr_song, checked);
-
-    def update_score_helper(self, curr_song):
+    def handle_choice(self, winner_title, loser_title):
         
-        if(len(self.songs[curr_song].get_below()) == 0):
-            self.songs[curr_song].set_score(0);
-            return 0;
+        # Grabs song nodes
+        winner_song = self.songs_map[winner_title];
+        loser_song = self.songs_map[loser_title];
+    
+        # Creates tree edge between winner and loser
+        winner_song.create_below_edge(loser_song);
+        loser_song.create_above_edge(winner_song);
+
+    # Iteration occurs after a choice has been made by the user
+    def iteration(self):
+
+        # Step 1: Score the entire tree, following each user choice. 
+        self.score_tree();
+
+        # Step 2: add new song to matchup pool and queue matchup
+        self.gen_choice();
+        
+        # Step 3: scan tree, add matchups that fix first degree node branch splits
+        self.resolve_branches();
+
+        # Step 4: Set next matchup from matchups queue
+        if(self.matchups.isEmpty()):
+            # Indicates algorithm completion
+            self.complete = True;
         else:
-            score = len(self.songs[curr_song].get_below());
-            for child in self.songs[curr_song].get_below():
-                score += self.update_score_helper(child);
-            return score;    
+            self.curr_matchup = self.matchups.dequeue();
+        
+        print(self.reverse_score_map)
+        
 
-    def break_cycles(self):
-        pass
+    # Adds a new song to the tree via a new matchup. 
+    def gen_choice(self):
 
-    def check_if_finished(self):
-        # set of all song titles not traversed
-        unchecked = set(self.songs.keys())
-        # list of all song title keys
-        arb_song_title = list(self.songs.keys())[0]
-        head = self.songs[arb_song_title].get_head()
+        # Indicates all songs have been added to the tree. 
+        if(len(self.songs_set) != 0):
 
-        # traverses linked list of songs, determines if all songs are connected
-        curr_node = head
-        while(curr_node != None):
-            if(len(curr_node) != 1):
-                break;
-            unchecked.remove(curr_node[0].get_title())
-            curr_node = curr_node.get_below()
+            # Left song adds a new song to the tree. 
+            left_song_title = list(self.songs_set)[0];
+            # Right song is the best matchup candidate
+            right_song_title = self.find_best_match();
 
-        # returns true if all songs are checked, false otherwise
-        return len(unchecked) == 0;
+            # Indicates that left_song is now in the tree. 
+            self.songs_set.discard(left_song_title);
+
+            if(len(self.songs_set) != 0):
+                new_matchup = Matchup(left_song_title, right_song_title);
+                self.matchups.enqueue(new_matchup);
+    
+    # Currently just sorts the new song in around the middle of tree. 
+    def find_best_match(self):
+
+        # Longest critical path
+        score_map_len = len(self.reverse_score_map);
+
+        # middle of tree
+        middle_idx = math.floor(score_map_len / 2.0);
+    
+        return list(self.reverse_score_map[middle_idx])[0]
+
+    # Scans the tree, adds matchups that fixes first degree diverging branches. 
+    def resolve_branches(self):
+
+        # Step 1: Fix edges that fall under transitive property - no matchups created
+        
 
 
+        # Step 2: Create necessary matchups - songs of same score are candidates
+        for score, title_set in self.reverse_score_map.items():
 
+            title_set_len = len(title_set)
+
+            if(title_set_len >= 2):
+
+                title_list = list(title_set)
+                # Rounds length down to nearest even num
+                for i in range(0, title_set_len - title_set_len%2, 2):
+                    
+                    left_title = title_list[i]
+                    right_title = title_list[i+1]
+                    
+                    new_matchup = Matchup(left_title, right_title)
+                    self.matchups.enqueue(new_matchup)
+        
+
+    # Recalculate scores for each node in the tree.
+    def score_tree(self):
+        
+        # Clear scores map. 
+        self.score_map.clear();
+        self.reverse_score_map.clear();
+
+        # Calculates below & above scores. 
+        for title, curr_node in self.songs_map.items():
+
+            if(title in self.songs_set):
+                continue;
+
+            # Returns values aren't needed. 
+            dummy_one = self.score_tree_below(curr_node)
+
+
+    # Recursive helper for score_tree() : Below direction
+    def score_tree_below(self, node):
+            
+        children = node.get_below();
+        title = node.get_title();
+
+        # Indicates there are no children
+        if(len(children) == 0):
+            
+            # Update score maps
+            self.score_map[title] = 0
+            self.add_to_reverse_score_map(0, title)
+
+            return 0
+        
+        # Skips recursion if a score has already been calculated. 
+        elif(title in self.score_map):
+            return self.score_map[title]
+        
+        # Recursively calculate children scores to then find node score. 
+        else:
+    
+            max_child_score = 0
+
+            for child in children:
+
+                curr_child_score = self.score_tree_below(child)
+
+                if(curr_child_score > max_child_score):
+                    max_child_score = curr_child_score
+
+            # update score maps
+            self.score_map[title] = max_child_score + 1
+            self.add_to_reverse_score_map(max_child_score + 1, title)
+
+            return max_child_score + 1
+        
+    def add_to_reverse_score_map(self, score, title):
+
+        if(score in self.reverse_score_map):
+            self.reverse_score_map[score].add(title)
+        else:
+            title_set = set()
+            title_set.add(title)
+            self.reverse_score_map[score] = title_set
+
+
+#algorithm = Algorithm({"One Drop", "One Love", "Jamming", "No Woman No Cry", "Is This Love", "Could You Be Loved", "Exodus"});
+algorithm = Algorithm({"1","2","3","4","5","6","7", "8","9","10","11","11"})
+algorithm.run_algorithm();1
