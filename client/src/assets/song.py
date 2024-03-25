@@ -24,6 +24,9 @@ class Song:
         else:
             self.above.add(song_node);
     
+    def remove_edge(self, song_node):
+        
+        self.below.discard(song_node);
 
     def check_below(self):
         return (len(self.below) > 1);

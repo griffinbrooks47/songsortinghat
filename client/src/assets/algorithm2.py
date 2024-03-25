@@ -90,9 +90,32 @@ class Algorithm:
             # Indicates algorithm completion
             self.complete = True;
         else:
-            self.curr_matchup = self.matchups.dequeue();
+            while True:
+                self.curr_matchup = self.matchups.dequeue()
+                # Ensures matchup is safe from cycles. 
+                if self.check_safe_matchup(self.curr_matchup):
+                    break
+
         
         print(self.reverse_score_map)
+       
+    # Safe guard to prevent choices that cause graph cycles. 
+    def check_safe_matchup(self, matchup):
+
+        left_title = matchup.get_left();
+        right_title = matchup.get_right();
+
+        # Allows matchup if it introduces a new node (cycle safe). 
+        if(left_title not in self.score_map 
+           or right_title not in self.score_map):
+            return True;
+
+        # Scores must match, otherwise discard matchup
+        left_score = self.score_map[matchup.get_left()]
+        right_score = self.score_map[matchup.get_right()]
+
+        return (left_score == right_score)
+
         
 
     # Adds a new song to the tree via a new matchup. 
@@ -128,7 +151,27 @@ class Algorithm:
     def resolve_branches(self):
 
         # Step 1: Fix edges that fall under transitive property - no matchups created
-        
+        #   Remove edges between neighboring nodes with a difference in degree > 1
+        for title, parent_node in self.songs_map.items():
+
+            if(title not in self.score_map):
+                continue;
+            
+            parent_score = self.score_map[title]
+            children = parent_node.get_below()
+
+            edges_to_remove = set()
+
+            for child_node in children:
+
+                child_score = self.score_map[child_node.get_title()]
+
+                if abs(parent_score - child_score) > 1:
+                    edges_to_remove.add(child_node)
+
+            for child in edges_to_remove:
+                parent_node.remove_edge(child)
+                print("Edge Removed: " + title + " -> " + child.get_title())
 
 
         # Step 2: Create necessary matchups - songs of same score are candidates
@@ -145,6 +188,7 @@ class Algorithm:
                     left_title = title_list[i]
                     right_title = title_list[i+1]
                     
+                    print("New Match: " + left_title + " vs " + right_title)
                     new_matchup = Matchup(left_title, right_title)
                     self.matchups.enqueue(new_matchup)
         
@@ -213,6 +257,5 @@ class Algorithm:
             self.reverse_score_map[score] = title_set
 
 
-#algorithm = Algorithm({"One Drop", "One Love", "Jamming", "No Woman No Cry", "Is This Love", "Could You Be Loved", "Exodus"});
-algorithm = Algorithm({"1","2","3","4","5","6","7", "8","9","10","11","11"})
+algorithm = Algorithm({"One Drop", "One Love", "Jamming", "No Woman No Cry", "Is This Love", "Could You Be Loved", "Exodus"});
 algorithm.run_algorithm();1
