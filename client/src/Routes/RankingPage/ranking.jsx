@@ -2,6 +2,10 @@ import { useState, useEffect } from "react";
 import { useArtistContext } from "../../Context/artist-context";
 import { motion } from 'framer-motion';
 
+import "./song.js";
+import "./matchup.js";
+import "./matchupQueue.js";
+
 import './ranking.css'
 
 export const Ranking = () => {
@@ -47,6 +51,7 @@ export const StageOne = (props) => {
 
     const [currIteration, setCurrIteration] = useState(null);
 
+    // Switches to the next page of songs. 
     const nextIteration = () => {
         // switches to next stage
         if(currIteration >= Object.keys(songs).length-1){
@@ -57,18 +62,21 @@ export const StageOne = (props) => {
         }
     }
 
+    // Switches to the previous page of songs. 
     const prevIteration = () => {
         if(currIteration > 0){
             setCurrIteration(currIteration - 1);
         }
     }
 
+    // Removes/Adds a song to the current ranking pool. 
     const toggleIncluded = (stage, innerId) => {
         let currSongs = {...songs}
         currSongs[stage][innerId][2] = !currSongs[stage][innerId][2];
         setSongs(currSongs)
     }
 
+    // Creates the candidates for the final ranking stage. 
     const createCandidates = () => {
 
         let candidates = [];
@@ -80,6 +88,7 @@ export const StageOne = (props) => {
                 }
             }
         }
+        console.log(candidates);
         return candidates;
     }
 
@@ -362,153 +371,20 @@ export const StageTwo = (props) => {
         }
 
     )
-    const initDevData = () => {
-        return devSongData;
-    }
+    
+    //* Algorithm Variables
+    
+    const [leftChoice, setLeftChoice] = useState('');
+    const [rightChoice, setRightChoice] = useState('');
 
-    const { finalSongs, songCount } = useArtistContext();
+    let currMatchup = null;
+    let matchupQueue = new MatchupQueue();
 
-    const initStageTwoSongs = () => {
-        if(props.candidates.length > 0) {
-            return props.candidates
-        }
-        let candidates = [];
-        for(const key in finalSongs) {
-            candidates.push(finalSongs[key]);
-        }
-        return candidates;
-    }
-    const initSongData = () => {
-        let candidates = initStageTwoSongs();
-        setStageTwoSongs(candidates);
-        let currSongData = {};
-        for(const candidate of candidates){
-            let missingCandidates = [...candidates];
-            let missingIdx = missingCandidates.indexOf(candidate)
-            if (missingIdx !== -1) {
-                missingCandidates.splice(missingIdx, 1);
-              }
+    const [complete, setComplete] = useState(false);
 
-            let missingFinal = [];
+    
 
-            for(const missingCandidate of missingCandidates){
-                missingFinal.push(missingCandidate.name);
-            }
 
-            currSongData[candidate.name] = {
-                above:[],
-                below:[],
-                score:0,
-                missing:missingFinal,
-                pass:false,
-                rank:null,
-                data:{
-                    album:candidate.album,
-                    cover:candidate.cover,
-                    artists:candidate.artists
-                }
-            }
-        }
-        return currSongData;
-    }
-
-    // generates final candidates directly from global finalSongs
-    const [stageTwoSongs, setStageTwoSongs] = useState([]);
-
-    // react variables
-    const [choiceOne, setChoiceOne] = useState('');
-    const [choiceTwo, setChoiceTwo] = useState('');
-
-    // algorithm variables
-
-    //* USE  OR initSongData
-    const [songData, setSongData] = useState(() => initSongData());
-
-    const [ranking, setRanking] = useState(true);
-    const [skips, setSkips] = useState([]);
-    const [prevLowest, setPrevLowest] = useState("");
-    const [prevHighest, setPrevHighest] = useState("");
-
-    const findLowestScore = (exclude) => {
-        let songDataCopy = {...songData};
-        if(exclude.length > 0) {
-            for(const excludeSong of exclude) {
-                delete songDataCopy[excludeSong];
-            }
-        }
-
-        let minKey = null;
-        let minValue = songCount+1;
-
-        for (const songDataKey in songDataCopy) {
-            let currentValue = songDataCopy[songDataKey]['score'];
-            if (currentValue < minValue) {
-              minValue = currentValue;
-              minKey = songDataKey;
-            }
-        }
-
-        return minKey;
-    }
-    const findHighestPotential = (excluded, lowest) => {
-
-        let songDataCopy = {...songData};
-
-        let missingSongs = songDataCopy[lowest]['missing'];
-
-        for(const exclusion in excluded) {
-            if(exclusion in missingSongs){
-                let removeIdx = missingSongs.indexOf(exclusion);
-                if(removeIdx !== -1){
-                    missingSongs.splice(removeIdx, 1);
-                }
-            }
-        }
-
-        let minData = null;
-        let minValue = songCount+1;
-
-        for (const missingData of missingSongs) {
-            let currentValue = songDataCopy[missingData]['score'];
-            if (currentValue < minValue) {
-              minValue = currentValue;
-              minData = missingData;
-            }
-        }
-
-        return minData;
-
-    }
-    const setChoices = (songDataObj) => {
-
-        let lowest_skips = [];
-
-        for(const songDataKey in songDataObj){
-            if(songDataObj[songDataKey]['pass'] == true){
-                lowest_skips.push(songDataKey);
-            }
-        }
-
-        let lowest = findLowestScore(lowest_skips);
-        let skips = [lowest,];
-
-        let highest = findHighestPotential(skips, lowest);
-
-        console.log(lowest, highest);
-
-        setChoiceOne(lowest);
-        setChoiceTwo(highest);
-    }
-
-    // choice is either 1 or 2
-    const iteration = (choice) => {
-        console.log(choice);
-    }
-
-    useState(() => {
-        let songDataCopy = {...songData};
-        setChoices(songDataCopy);
-    }, [])
 
     return (
         <div className="stage-two">
@@ -516,17 +392,17 @@ export const StageTwo = (props) => {
             
             <hr className="stage-two-divider"></hr>
            
-            {(choiceOne != '' || choiceTwo != '') && (
+            {(leftChoice != '' || rightChoice != '') && (
                 <ul className="stage-two-options">
                     <StageTwoChoice 
-                        title={choiceOne}
+                        title={leftChoice}
                         data={songData[choiceOne]['data']}
                         iteration={()=>{
                             iteration(1);
                         }}
                     />
                     <StageTwoChoice 
-                        title={choiceTwo}
+                        title={rightChoice}
                         data={songData[choiceTwo]['data']}
                         iteration={()=>{
                             iteration(2);
