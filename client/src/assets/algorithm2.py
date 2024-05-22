@@ -29,6 +29,9 @@ class Algorithm:
 
         # maps scores to the set of titles with that score
         self.reverse_score_map = {}
+        
+        # Maps songs to songs its been ranked above directly
+        self.choice_cache = {}
 
     def run_algorithm(self):
 
@@ -62,6 +65,8 @@ class Algorithm:
             # Runs iteration.
             self.iteration();
             print("_________________")
+            
+        print(self.choice_cache)
 
     def handle_choice(self, winner_title, loser_title):
         
@@ -72,6 +77,13 @@ class Algorithm:
         # Creates tree edge between winner and loser
         winner_song.create_below_edge(loser_song);
         loser_song.create_above_edge(winner_song);
+        
+        # Add to cache of user choices. 
+        if winner_title not in self.choice_cache:
+            self.choice_cache[winner_title] = set()
+        self.choice_cache[winner_title].add(loser_title)
+            
+            
 
     # Iteration occurs after a choice has been made by the user
     def iteration(self):
@@ -92,12 +104,34 @@ class Algorithm:
         else:
             while True:
                 self.curr_matchup = self.matchups.dequeue()
-                # Ensures matchup is safe from cycles. 
+                
+                # Step 5: Ensures matchup is safe from cycles. 
                 if self.check_safe_matchup(self.curr_matchup):
-                    break
-
+                    # Step 6: Automatically make choice if possible
+                    if(self.check_if_answered(self.curr_matchup)):
+                        pass
+                    else:
+                        break
+                    
         
-        print(self.reverse_score_map)
+        #print(self.reverse_score_map)
+        
+    # Automatically resolve matchup if user previously compared the two songs. 
+    def check_if_answered(self, matchup):
+        
+        left_title = matchup.get_left();
+        right_title = matchup.get_right();
+        
+        if(left_title in self.choice_cache and right_title in self.choice_cache[left_title]):
+            self.handle_choice(left_title, right_title)
+            print("Automatic Answer")
+            return True
+        elif(right_title in self.choice_cache and left_title in self.choice_cache[right_title]):
+            self.handle_choice(right_title, left_title)
+            print("Automatic Answer")
+            return True
+        else:
+            return False;
        
     # Safe guard to prevent choices that cause graph cycles. 
     def check_safe_matchup(self, matchup):
@@ -171,7 +205,7 @@ class Algorithm:
 
             for child in edges_to_remove:
                 parent_node.remove_edge(child)
-                print("Edge Removed: " + title + " -> " + child.get_title())
+                #print("Edge Removed: " + title + " -> " + child.get_title())
 
 
         # Step 2: Create necessary matchups - songs of same score are candidates
@@ -188,7 +222,7 @@ class Algorithm:
                     left_title = title_list[i]
                     right_title = title_list[i+1]
                     
-                    print("New Match: " + left_title + " vs " + right_title)
+                    #print("New Match: " + left_title + " vs " + right_title)
                     new_matchup = Matchup(left_title, right_title)
                     self.matchups.enqueue(new_matchup)
         
@@ -257,5 +291,10 @@ class Algorithm:
             self.reverse_score_map[score] = title_set
 
 
-algorithm = Algorithm({"One Drop", "One Love", "Jamming", "No Woman No Cry", "Is This Love", "Could You Be Loved", "Exodus"});
-algorithm.run_algorithm();1
+algorithm = Algorithm({"She Wants To Move", "The Way She Dances", "Bobby James", "Spaz", "Tape You", "You Know What", "The Man", "Breakout", "Fly or Die", "Lap Dance", "Run to the sun", "Everyone Nose"});
+algorithm.run_algorithm();
+
+
+# To Add:
+# Keep track of song losses and wins - make these affect the song placement
+# Keep track of inheritance in the song choice cache
